@@ -156,7 +156,7 @@
 				$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
 			}
 			openPdf = cordova.plugins.disusered.open;
-			
+			/*
 			// For Android => Enable background mode
 			cordova.plugins.backgroundMode.enable();
 			cordova.plugins.backgroundMode.setDefaults({
@@ -167,7 +167,7 @@
 			//cordova.plugins.backgroundMode.configure({
 			//	title:'App toujours en fonction (3 MINUTES MAX), nous vous informons des courses en cours...'
 			//});
-			
+			*/
 			// For iOS => backgroundtask
 			backgroundtask.start(bgFunctionToRun);
 			// Efficient and batterie saving geolocation...
@@ -180,9 +180,9 @@
 				distanceFilter: 10,
 				activityType: 'Fitness',
 				debug: false,
-				interval: 30000,
-				fastestInterval: 10000,
-				activitiesInterval: 30000,
+				interval: 10000,
+				fastestInterval: 6000,
+				activitiesInterval: 10000,
 				saveBatteryOnBackground : false,
 				stopOnStillActivity : false,
 				stopOnTerminate : false,
@@ -332,7 +332,6 @@
 			// Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app. 
 			backgroundGeolocation.start();
 			*/
-			locateMe();
 			cordova.plugins.notification.local.clearAll(function() {
 				//alert("All notifications cleared");
 			}, this);
