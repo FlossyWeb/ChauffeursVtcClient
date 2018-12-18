@@ -210,8 +210,6 @@
 				BackgroundGeolocation.startTask(function(taskKey) {
 					// execute long running task
 					// eg. ajax post location
-					lat = location.latitude;
-					lng = location.longitude;
 					$.get('https://api-adresse.data.gouv.fr/reverse/', {lat: lat, lon: lng, type: ''}, function(data) {
 						//alert(data.features[0].properties.label+' - '+data.features[0].properties.postcode);
 						if(data.features[0].properties.label!='baninfo') {
@@ -219,10 +217,10 @@
 							$('#addressInput').val(data.features[0].properties.label);
 							$('#addressInput2').val(data.features[0].properties.label);
 							$('#addressInputPrices').val(data.features[0].properties.label);
-							insee = data.features[0].properties.citycode;
-							zip = data.features[0].properties.postcode;
-							dep = zip.substring(0, 2);
-							$.sessionStorage.setItem('dep', dep);
+							//insee = data.features[0].properties.citycode;
+							//zip = data.features[0].properties.postcode;
+							//dep = zip.substring(0, 2);
+							//$.sessionStorage.setItem('dep', dep);
 						}
 					}, "json");
 					// IMPORTANT: task has to be ended by endTask
