@@ -156,6 +156,7 @@
 				$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
 			}
 			openPdf = cordova.plugins.disusered.open;
+			playAudio('sounds/ring.mp3');
 			/*
 			// For Android => Enable background mode
 			cordova.plugins.backgroundMode.enable();
@@ -753,7 +754,6 @@
 	}
 	$(document).on( 'pagecreate', function() {
 		$( "body>[data-role='panel']" ).panel().enhanceWithin();
-		playAudio('sounds/ring.mp3');
 	});
 	$( '#connect' ).live( 'pagecreate',function(event){
 		$('#displayForgot').click(function (){
