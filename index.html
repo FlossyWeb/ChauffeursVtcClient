@@ -753,6 +753,7 @@
 	}
 	$(document).on( 'pagecreate', function() {
 		$( "body>[data-role='panel']" ).panel().enhanceWithin();
+		playAudio('sounds/ring.mp3');
 	});
 	$( '#connect' ).live( 'pagecreate',function(event){
 		$('#displayForgot').click(function (){
@@ -2837,8 +2838,15 @@
 	function playAudio(src) {
 		if (my_media == null) {
 			// Create Media object from src
-			var path = window.location.pathname;
-			path = path.substring(0, path.lastIndexOf('/') + 1);
+			//var path = window.location.pathname;
+			//path = path.substring(0, path.lastIndexOf('/') + 1);
+			// Need to unescape if path have '%20' component
+			var path = decodeURI(cordova.file.applicationDirectory) + 'www/' + src;
+
+			// iOS need to remove file://
+			if (device.platform.toLowerCase() == 'ios') {
+				path = path.replace('file://', '');
+			}
 			var source = path + src;
 			my_media = new Media(source, playOnSuccess, playOnError);
 		}
@@ -2853,11 +2861,11 @@
 	}
 	// onSuccess Callback
 	function playOnSuccess() {
-		//console.log("playAudio():Audio Success");
+		console.log("playAudio():Audio Success");
 	}
 	// onError Callback 
 	function playOnError(error) {
-		//navigator.notification.alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+		navigator.notification.alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
 	}
     </script>
     </head>
@@ -3096,7 +3104,7 @@
 				<br><br>
 				Nous recherchons le VTC disponible le plus proche de vous! Des frais d&rsquo;approches peuvent s&rsquo;appliquer, n&rsquo;h&eacute;sitez pas &agrave; les v&eacute;rifier avec le chauffeur.
 				<br>
-				Veuillez patienter pendant la recherche: <span class="elapsed" style="color:#FC0;"></span> Secondes restantes.
+				Veuillez patienter pendant la recherche: <span class="elapsed" style="color:#922268;"></span> Secondes restantes.
 				<br><br><br>
 				<button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-back" onClick="stopCall()"> Retour / Annulation </button>
 				</b></p>
@@ -3258,7 +3266,7 @@
             <div style="display:block;">
 				<button onClick="refreshHist()" class="ui-btn ui-btn-b ui-btn-right ui-icon-refresh ui-shadow-icon ui-btn-icon-notext ui-corner-all"></button>
             	<center>
-                <p style="font-size:16px;color:#FC0;"><b>Historique des courses</b><br><img src="visuels/dots.png" width="100%" style="max-width:1200px;"/></p>
+                <p style="font-size:16px;color:#922268;"><b>Historique des courses</b><br><img src="visuels/dots.png" width="100%" style="max-width:1200px;"/></p>
                 </center>
 				<button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-clock ui-btn-inline" onClick="showCont('.ui-block-a','.ui-block-b')">Commandes</button>
 				<button class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-calendar ui-btn-inline" onClick="showCont('.ui-block-b','.ui-block-a')">R&eacute;servations</button>
@@ -3346,7 +3354,7 @@
         <div class="ui-content" role="main">
             <div style="display:block;" id="monTaxiRate">
             	<center>
-					<div id="urate" style="font-weight:bold;color: #FC0;"></div>
+					<div id="urate" style="font-weight:bold;color: #922268;"></div>
                 </center>
                 <div class="ui-bar-a ui-corner-all ui-shadow" style="padding:1em; display:block;">
                     Accueil :
@@ -3364,7 +3372,7 @@
             </div>
             <div style="display:block;" id="leTaxiRate">
             	<center>
-					<div id="urate2" style="font-weight:bold;color: #FC0;"></div>
+					<div id="urate2" style="font-weight:bold;color: #922268;"></div>
                 </center>
                 <div class="ui-bar-a ui-corner-all ui-shadow" style="padding:1em; display:block;">
                     Note :
@@ -3535,7 +3543,7 @@
         <div class="ui-content" role="main">
             <div style="display:block;">
             	<center>
-					<p style="font-size:16px;color:#FC0;"><b>Nous soutenons:</b><br><img src="visuels/dots.png" width="100%" style="max-width:1200px;"/></p>
+					<p style="font-size:16px;color:#922268;"><b>Nous soutenons:</b><br><img src="visuels/dots.png" width="100%" style="max-width:1200px;"/></p>
                 </center>
 				<div id="assos_cont"></div>
             </div>
