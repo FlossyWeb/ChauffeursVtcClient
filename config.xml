@@ -123,6 +123,9 @@
         <edit-config target="NSCameraUsageDescription" file="*-Info.plist" mode="merge">
             <string>CELA VOUS PERMETTRA DE SCANNER DES QR CODES.</string>
         </edit-config>
+		<edit-config target="NSContactsUsageDescription" file="*-Info.plist" mode="merge">
+			<string>CELA VOUS PERMETTRA DE COMMADER UN CHAUFFEUR POUR UN AMIS.</string>
+		</edit-config>
 		<!-- 
 		<edit-config target="NSCalendarsUsageDescription" file="*-Info.plist" mode="merge">
 			<string>CELA VOUS PERMETTRA DE CREER DANS VOTRE CALENDRIER UN RENDEZ-VOUS AVEC LE TAXI.</string>

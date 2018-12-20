@@ -156,7 +156,6 @@
 				$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
 			}
 			openPdf = cordova.plugins.disusered.open;
-			playAudio('sounds/ring.mp3');
 			/*
 			// For Android => Enable background mode
 			cordova.plugins.backgroundMode.enable();
@@ -482,7 +481,7 @@
 			*/
 			var currentName = $('#Accurate').val();
 			$('#Accurate').val(contactInfo.displayName);
-			$('#cellular').val(contactInfo.phones[0]);
+			$('#cellular').val(contactInfo.selectPhone); // selectPhone or phones[0] (phones array lists all phones in contact profile)
 			$("#next-box").hide("fast");
 			$("#search-box").show("medium");
 		});
@@ -2085,7 +2084,7 @@
 				if(appname=="montaxi") {
 					var mymarker = mapEvent.addMarker({ id: i ,'position': latlng, 'bounds': true, 'title': name, 'icon': cabIcon }).click(function() {
 						//infoCont = '<div id="infoCont"><p style="color:#333;"><b>' + name + ' est &agrave; ' + parseFloat(distance).toFixed(1) + ' Km de vous.<br>' + address+ '</b></p></div>';
-						infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>Taxi Num&eacute;ro : '+licence+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>Marque : '+brand+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Places : '+seats+'</li><li>Note : '+rating+' / 5</li><li>Imatriculation : '+licence_plate+'</li><li>Op&eacute;rateur : '+appname+'</li></b></ul></div>';
+						infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+licence+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>Marque : '+brand+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Places : '+seats+'</li><li>Note : '+rating+' / 5</li><li>Imatriculation : '+licence_plate+'</li><li>Op&eacute;rateur : '+appname+'</li></b></ul></div>';
 						callBtn='<button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-check cabs" id="' + i + '" onClick="sendJobOpen(\''+ url +'\')">Choisir</button>';
 						//mapEvent.openInfoWindow({ 'content':  infoCont}, this);
 						mapEvent.openInfoWindow({ 'content':  infoCont+callBtn}, this);
@@ -2097,7 +2096,7 @@
 				}
 				else {
 					mapEvent.addMarker({ id: i ,'position': latlng, 'bounds': true, 'title': name, 'icon': otherCabIcon }).click(function() {
-						infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>Taxi Num&eacute;ro : '+licence+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>Marque : '+brand+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Places : '+seats+'</li><li>Note : '+rating+' / 5</li><li>Imatriculation : '+licence_plate+'</li><li>Op&eacute;rateur : '+appname+'</li></b></ul></div>';
+						infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+licence+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>Marque : '+brand+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Places : '+seats+'</li><li>Note : '+rating+' / 5</li><li>Imatriculation : '+licence_plate+'</li><li>Op&eacute;rateur : '+appname+'</li></b></ul></div>';
 						callBtn='<button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-check cabs" id="' + i + '" onClick="sendJobOpen(\''+ url +'\')">Choisir</button>';
 						//mapEvent.openInfoWindow({ 'content':  infoCont}, this);
 						mapEvent.openInfoWindow({ 'content':  infoCont+callBtn}, this);
@@ -2199,7 +2198,7 @@
 					}
 					else {
 						mapEvent.addMarker({ id: i ,'position': latlng, 'bounds': true, 'title': name, 'icon': otherCabIcon }).click(function() {
-							infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>Taxi Num&eacute;ro : '+licence+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>Marque : '+brand+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Places : '+seats+'</li><li>Note : '+rating+' / 5</li><li>Imatriculation : '+licence_plate+'</li></b></ul></div>';
+							infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+licence+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>Marque : '+brand+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Places : '+seats+'</li><li>Note : '+rating+' / 5</li><li>Imatriculation : '+licence_plate+'</li></b></ul></div>';
 							callBtn='<button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-check cabs" id="' + i + '" onClick="sendJobOpen(\''+ url +'\')">Choisir</button>';
 							//mapEvent.openInfoWindow({ 'content':  infoCont}, this);
 							mapEvent.openInfoWindow({ 'content':  infoCont+callBtn}, this);
@@ -2242,7 +2241,7 @@
 		//$.mobile.loading( "hide" );
 		if(i==0) {
 			if(app) navigator.notification.alert('Aucun VTC touvé', alertDismissed, 'ChauffeursVTC', 'OK');
-			else alert('AUCUN TAXI TROUVE !!');
+			else alert('AUCUN VTC TROUVE !!');
 			document.location.href='index.html';
 		}*/
 	}// ENDS FUNCTION
@@ -2533,8 +2532,8 @@
 				document.location.href='index.html';
 			}
 			else if (data.message == 'available') {
-				if(app) navigator.notification.alert("Erreur: Ce taxi n'est plus disponible ! Veuillez nous pardonner ce contretemps.", alertDismissed, 'ChauffeursVTC', 'OK');
-				else alert("Erreur: Ce taxi n'est plus disponible ! Veuillez nous pardonner ce contretemps.");
+				if(app) navigator.notification.alert("Erreur: Ce VTC n'est plus disponible ! Veuillez nous pardonner ce contretemps.", alertDismissed, 'ChauffeursVTC', 'OK');
+				else alert("Erreur: Ce VTC n'est plus disponible ! Veuillez nous pardonner ce contretemps.");
 			}
 			else {
 				if(app) navigator.notification.alert("Erreur: La demande n'a pas été envoyée, vous allez devoir recommencer, veuillez nous pardonner ce contretemps.", alertDismissed, 'ChauffeursVTC', 'OK');
@@ -2842,7 +2841,6 @@
 			//path = path.substring(0, path.lastIndexOf('/') + 1) + src;
 			// Need to unescape if path have '%20' component
 			var path = decodeURI(cordova.file.applicationDirectory) + 'www/' + src;
-
 			// iOS need to remove file://
 			if (device.platform.toLowerCase() == 'ios') {
 				path = path.replace('file://', '');
@@ -2860,11 +2858,11 @@
 	}
 	// onSuccess Callback
 	function playOnSuccess() {
-		console.log("playAudio():Audio Success");
+		//console.log("playAudio():Audio Success");
 	}
 	// onError Callback 
 	function playOnError(error) {
-		navigator.notification.alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
+		//navigator.notification.alert('code: '    + error.code    + '\n' + 'message: ' + error.message + '\n');
 	}
     </script>
     </head>
