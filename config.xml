@@ -76,7 +76,7 @@
 	</plugin>
 	<plugin name="cordova-plugin-x-socialsharing" source="npm" />
 	<plugin name="com-badrit-contactpicker" source="npm" />
-	<plugin name="phonegap-plugin-barcodescanner" spec="0.7.2" source="npm" />
+	<plugin name="phonegap-plugin-barcodescanner" source="npm" />
 	<plugin name="cordova-plugin-powermanagement" source="npm" />
 	<plugin name="cordova-plugin-background-task" source="npm" />
 	<!-- 
@@ -84,7 +84,6 @@
 		<variable name="ALWAYS_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TAXIS DE CONNAITRE VOTRE POSITION." />
 	</plugin>
 	<plugin name="cordova-sms-plugin" source="npm" spec="0.1.11" />
-	<plugin name="cordova-plugin-background-mode" source="npm" spec="0.7.2" />
 	<plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.2.5" source="npm">
 	<plugin name="de.appplant.cordova.plugin.local-notification" spec="0.8.4" source="npm" />
 	<plugin name="de.appplant.cordova.plugin.local-notification-ios9-fix" spec="0.8.2" />
