@@ -76,13 +76,13 @@
 	</plugin>
 	<plugin name="cordova-plugin-x-socialsharing" source="npm" />
 	<plugin name="com-badrit-contactpicker" source="npm" />
-	<!-- <plugin name="phonegap-plugin-barcodescanner" source="npm" /> -->
+	<plugin name="phonegap-plugin-barcodescanner" source="npm" />
 	<plugin name="cordova-plugin-powermanagement" source="npm" />
+	<plugin name="cordova-plugin-background-task" source="npm" />
+	<!-- 
 	<plugin name="cordova-plugin-mauron85-background-geolocation" source="npm">
 		<variable name="ALWAYS_USAGE_DESCRIPTION" value="CELA PERMETTRA AUX TAXIS DE CONNAITRE VOTRE POSITION." />
 	</plugin>
-	<plugin name="cordova-plugin-background-task" source="npm" />
-	<!-- 
 	<plugin name="cordova-sms-plugin" source="npm" spec="0.1.11" />
 	<plugin name="cordova-plugin-background-mode" source="npm" spec="0.7.2" />
 	<plugin name="cordova-plugin-mauron85-background-geolocation" spec="2.2.5" source="npm">
@@ -188,8 +188,8 @@
 
     <platform name="android">
 		<preference name="android-build-tool" value="gradle" />
-		<preference name="android-minSdkVersion" value="26" />
-		<preference name="android-targetSdkVersion" value="28" />
+		<preference name="android-minSdkVersion" value="16" />
+		<preference name="android-targetSdkVersion" value="26" />
         <preference name="SplashMaintainAspectRatio" value="true"/>
         <preference name="SplashShowOnlyFirstTime" value="true"/>
 		<!--
