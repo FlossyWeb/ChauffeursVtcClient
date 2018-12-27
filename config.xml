@@ -192,6 +192,7 @@
 		<preference name="android-targetSdkVersion" value="26" />
         <preference name="SplashMaintainAspectRatio" value="true"/>
         <preference name="SplashShowOnlyFirstTime" value="true"/>
+		<framework src="com.facebook.android:facebook-android-sdk:4.25.0" />
 		<!--
 		<edit-config file="AndroidManifest.xml" target="/manifest/uses-permission[@android:name='android.permission.RECORD_AUDIO']" mode="merge">
 			   <uses-permission android:name="android.permission.INTERNET" />
