@@ -1013,6 +1013,8 @@
 					}
 				}
 				else {
+					if(app) navigator.notification.alert('Tarif annoncé : '+data.prix+' €', alertDismissed, 'ChauffeursVTC', 'OK');
+					else alert('Tarif annoncé : '+data.prix+' €');
 					$.mobile.pageContainer.pagecontainer("change", "#book_page", { transition: "slide"} );
 				}
 				$('#booking').prop('disabled', false).removeClass('ui-disabled');
@@ -1098,6 +1100,8 @@
 					else alert('Vous ne pouvez modifier la réservation !!');
 				}
 				else {
+					if(app) navigator.notification.alert('Tarif annoncé : '+data.prix+' €', alertDismissed, 'ChauffeursVTC', 'OK');
+					else alert('Tarif annoncé : '+data.prix+' €');
 					$.mobile.pageContainer.pagecontainer("change", "#book_page", { transition: "slide"} );
 				}
 			}, "json");
