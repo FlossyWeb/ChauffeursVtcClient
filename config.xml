@@ -93,10 +93,9 @@
     <preference name="android-versionCode" value="5723" />
 	<preference name="buildArchitecture" value="x86" />
 	-->
-	<plugin name="cordova-plugin-facebook4" source="npm">
+	<plugin name="cordova-plugin-facebook4" source="npm" spec="1.7.4">
 		<param name="APP_ID" value="1953417441629593" />
 		<param name="APP_NAME" value="ChauffeursVTC" />
-		<param name="ANDROID_SDK_VERSOIN" value="4.25.0" />
 	</plugin>
 	<plugin name="cordova-plugin-x-socialsharing" source="npm" />
 	<plugin name="com-badrit-contactpicker" source="npm" />
@@ -192,7 +191,7 @@
 		<preference name="android-targetSdkVersion" value="26" />
         <preference name="SplashMaintainAspectRatio" value="true"/>
         <preference name="SplashShowOnlyFirstTime" value="true"/>
-		<framework src="com.facebook.android:facebook-android-sdk:4.25.0" />
+		<!-- <framework src="com.facebook.android:facebook-android-sdk:4.25.0" /> -->
 		<!--
 		<edit-config file="AndroidManifest.xml" target="/manifest/uses-permission[@android:name='android.permission.RECORD_AUDIO']" mode="merge">
 			   <uses-permission android:name="android.permission.INTERNET" />
