@@ -228,7 +228,7 @@ input[type=text], input[type=tel], input[type=date], input[type=time] {
     top: 0;
     left: 0;
 	overflow: auto;
-	background: url(../visuels/taxi-bg-bk-bw.jpg) no-repeat center fixed; 
+	background: url(../visuels/bg_HD_inputs.jpg) no-repeat center fixed; 
 	background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;
@@ -256,7 +256,7 @@ input[type=text], input[type=tel], input[type=date], input[type=time] {
 }
 @media all and (orientation: landscape) { 
 	.nyc {
-		background: url(../visuels/taxi-bg-ny.jpg) no-repeat center fixed; 
+		background: url(../visuels/bg_land_HD_inputs.jpg) no-repeat center fixed; 
 		background-size: cover;
 		-moz-background-size: cover;
 		-o-background-size: cover;

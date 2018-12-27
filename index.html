@@ -923,6 +923,7 @@
 		//$('#dblinks').append($('<input id="idcourse" type="hidden" value="' + idcourse + '"/>'));
 		//var radius = document.getElementById('radiusSelect').value;
 		var rdvpoint = document.getElementById("addressInput").value;
+		var dest = document.getElementById("DestAddress").value.replace(/'/g, "&rsquo;");
 		var room = document.getElementById("Accurate").value;
 		operator = $.localStorage.getItem('operator');
 		var hostname = document.getElementById("hostname").value;
@@ -956,7 +957,6 @@
 			var comments2 = '</ul>';
 		}
 		var comments = comments1+comments2;
-		var dest = document.getElementById("DestAddress").value.replace(/'/g, "&rsquo;");
 		var cell = document.getElementById("cellular").value;
 		var when = document.getElementById("when").value;
 		var date = document.getElementById("date").value;
@@ -994,35 +994,34 @@
 		url = '';
 		num_req = idcourse;
 		dep = $.sessionStorage.getItem('dep');
-		url = 'taxi=0000&tel=0000000000&idcourse=' + idcourse + '&num_req=' + num_req + '&rdvpoint=' + rdvpoint + '&lat=' + rdvlat + '&lng=' + rdvlng + '&comments=' + comments + '&cell=' + encodeURIComponent(cell) + '&when=' + when + '&date=' + date + '&operator=' + operator + '&howmany=' + howMany + '&dep=' + dep + '&zip=' + zip+'&group=1&ack=0&db=1';
+		url = 'taxi=0000&tel=0000000000&idcourse=' + idcourse + '&num_req=' + num_req + '&rdvpoint=' + rdvpoint + '&dest=' + dest + '&lat=' + rdvlat + '&lng=' + rdvlng + '&comments=' + comments + '&cell=' + encodeURIComponent(cell) + '&when=' + when + '&date=' + date + '&operator=' + operator + '&howmany=' + howMany + '&dep=' + dep + '&zip=' + zip+'&group=1&ack=0&db=1';
 		//url = url.replace(/'/g, "&rsquo;"); // if we escape with &rsquo; it will break the url adding a new var &...
 		url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
 		//alert(url);
-		$.post("https://www.chauffeursvtc.com/appserver/bookings_app_share.php", url, function(data) {
-			if(!data.ok) {
-				//navigator.notification.alert('Vous ne pouvez reserver un taxi que si le RDV est dans plus de 60 minutes !!');
-				//Sending as direct job
-				if(data.past) {
-					if(app) navigator.notification.alert('LA DATE DU RDV EST PASSEE !!', alertDismissed, 'ChauffeursVTC', 'OK');
-					else alert('LA DATE DU RDV EST PASSEE !!');
+		if(rdvpoint!='' && dest!='') {
+			$.post("https://www.chauffeursvtc.com/appserver/bookings_app_share.php", url, function(data) {
+				if(!data.ok) {
+					//navigator.notification.alert('Vous ne pouvez reserver un taxi que si le RDV est dans plus de 60 minutes !!');
+					//Sending as direct job
+					if(data.past) {
+						if(app) navigator.notification.alert('LA DATE DU RDV EST PASSEE !!', alertDismissed, 'ChauffeursVTC', 'OK');
+						else alert('LA DATE DU RDV EST PASSEE !!');
+					}
+					else {
+						//checkZip('#map_page_open');
+						checkZip('#map_page');
+					}
 				}
 				else {
-					//checkZip('#map_page_open');
-					checkZip('#map_page');
+					$.mobile.pageContainer.pagecontainer("change", "#book_page", { transition: "slide"} );
 				}
-			}
-			else {
-				$.mobile.pageContainer.pagecontainer("change", "#book_page", { transition: "slide"} );
-			}
-			$('#booking').prop('disabled', false).removeClass('ui-disabled');
-		}, "json");
-		/*
+				$('#booking').prop('disabled', false).removeClass('ui-disabled');
+			}, "json");
 		}
 		else {
-			//navigator.notification.alert('No Zip Code Here !!');
-			$( "#setZip" ).popup( "open", { positionTo: "window" } );
+			if(app) navigator.notification.alert('Vous devez renseigner les adresses de RDV et de destination.', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Vous devez renseigner les adresses de RDV et de destination.');
 		}
-		*/
 	}
 	$( '#book_page' ).live( 'pagecreate',function(event){
 		// NYC-WIFI Animations
@@ -1065,6 +1064,7 @@
 	function bookingMod()
 	{		
 		var newAdd = $('#addressInput2').val();
+		var newDest = $('#DestAddress2').val();
 		var newName = $('#Accurate2').val();
 		var newCell = $('#cellular2').val();
 		var newHowMany = $('#howMany2').val();
@@ -1086,11 +1086,11 @@
 			var comments2 = '</ul>';
 		}
 		var comments = comments1+comments2;
-		url = 'taxi=0000&tel=0000000000&idcourse=' + newId + '&rdvpoint=' + newAdd + '&comments=' + comments + '&cell=' + encodeURIComponent(newCell) + '&when=' + newWhen+ '&howmany=' + newHowMany + '&dep=' + newDep+'&db=1';
+		url = 'taxi=0000&tel=0000000000&idcourse=' + newId + '&rdvpoint=' + newAdd + '&dest=' + newDest + '&comments=' + comments + '&cell=' + encodeURIComponent(newCell) + '&when=' + newWhen+ '&howmany=' + newHowMany + '&dep=' + newDep+'&db=1';
 		//navigator.notification.alert(url);
 		url = url.replace(/'/g, "&rsquo;");
 		url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
-		if(newWhen!='') {
+		if(newWhen!='' && newAdd!='' && newDest!='') {
 			$.post("https://www.chauffeursvtc.com/appserver/bookings_app_mod.php", url, function(data) {
 				//$('#resmod').append(data.req);
 				if(!data.ok) {
@@ -1102,9 +1102,21 @@
 				}
 			}, "json");
 		}
-		else {
+		else if(newWhen=='') {
 			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une date de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la réservation, vous devez renseigner une date de RDV !!');
+		}
+		else if(newAdd=='') {
+			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une adresse de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Afin de modifier la réservation, vous devez renseigner une adresse de RDV !!');
+		}
+		else if(newDest=='') {
+			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une adresse de destination !!', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Afin de modifier la réservation, vous devez renseigner une adresse de destination !!');
+		}
+		else {
+			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Afin de modifier la réservation, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!');
 		}
 	}
 	function delCmd(id, deldep)
@@ -1138,6 +1150,8 @@
 		  componentRestrictions: {country: 'fr'}
 		};
 		var autocomplete = new google.maps.places.Autocomplete(input, options);
+		// We may not need more than this...
+		autocomplete.setFields(['address_components']);
 		// fired when an autocomplete option is selected or the input is submitted
 		google.maps.event.addListener(autocomplete, 'place_changed', function() {
 			//navigator.notification.alert('Fired');
@@ -1167,6 +1181,9 @@
 				}
 			}
 		});
+		let destInput = document.getElementById('DestAddress');
+		//let autocompleteDest = new google.maps.places.Autocomplete(destInput);
+		let autocompleteDest = new google.maps.places.Autocomplete(destInput, options);
         $("#addressInput").keydown(function () {
 			// Place is tiped into field and not chosen from the api responses
             isPlaceChanged = false;
@@ -1291,6 +1308,8 @@
 		  componentRestrictions: {country: 'fr'}
 		};
 		var autocomplete = new google.maps.places.Autocomplete(input, options);
+		// We may not need more than this...
+		autocomplete.setFields(['address_components']);
 		// fired when an autocomplete option is selected or the input is submitted
 		google.maps.event.addListener(autocomplete, 'place_changed', function() {
 			//navigator.notification.alert('Fired');
@@ -1317,19 +1336,6 @@
 			}
 		});
 		var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
-		// fired when an autocomplete option is selected or the input is submitted
-		google.maps.event.addListener(autocomplete2, 'place_changed', function() {
-			//navigator.notification.alert('Fired');
-			var place = autocomplete.getPlace();
-			var address = '';
-			if (place.address_components) {
-				address = [
-					(place.address_components[0] && place.address_components[0].short_name || ''),
-					(place.address_components[1] && place.address_components[1].short_name || ''),
-					(place.address_components[2] && place.address_components[2].short_name || '')
-				].join(' ');
-			}
-		});
 	});
 	function getRandomInt(min, max) {
 		/*
@@ -1483,8 +1489,9 @@
 		$('#search').prop('disabled', true).addClass('ui-disabled'); // Prevents from multitap
 		//$('#searchOpen').prop('disabled', true).addClass('ui-disabled'); // Prevents from multitap
 		dep = $.sessionStorage.getItem('dep');
-		var isAddr = document.getElementById("addressInput").value;
-		if(isAddr!='') {
+		let isAddr = document.getElementById("addressInput").value;
+		let isAddrDest = document.getElementById("DestAddress").value;
+		if(isAddr!='' && isAddrDest!='') {
 			$.mobile.pageContainer.pagecontainer("change", pageToGo, { transition: "slide", reverse: true} );
 			/*
 			if (isPlaceChanged || (dep != '') || (zip != '')) {
@@ -1498,8 +1505,8 @@
 			*/
 		}
 		else {
-			if(app) navigator.notification.alert('Veuillez renseigner une adresse ou attendre la fin de la géolocalisation SVP...', alertDismissed, 'ChauffeursVTC', 'OK');
-			else alert('Veuillez renseigner une adresse ou attendre la fin de la géolocalisation SVP...');
+			if(app) navigator.notification.alert('Veuillez renseigner une adresse de départ (ou attendre la fin de la géolocalisation), ainsi qu\'une adresse de destination SVP...', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Veuillez renseigner une adresse de départ (ou attendre la fin de la géolocalisation), ainsi qu\'une adresse de destination SVP...');
 		}
 		$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 		//$('#searchOpen').prop('disabled', false).removeClass('ui-disabled'); // Button is back
@@ -2443,9 +2450,11 @@
 		num_req = idcourse;
 		dep = $.sessionStorage.getItem('dep');
 		var once = true; // we only trigger the first marker
+		var cabAvail = false;
+		var realcost = '??';
 		i = 0; // We need to make any numreq unique on that one !!
 		//$.post("https://www.chauffeursvtc.com/appserver/app_dcvp_xml.php", { lat: rdvlat, lng: rdvlng, type: typecar, howmany: howMany, cb: cb, group: '1', dep: '', pass: 'true'}, function(xml){
-		$.post('https://www.chauffeursvtc.com/appserver/app_dcvp_xml.php', {lat: rdvlat, lng: rdvlng, type: typecar, howmany: howMany, cb: cb, group: group, dep: dep, zip: zip, insee: insee, pass: 'true'}, function(xml){
+		$.post('https://www.chauffeursvtc.com/appserver/app_dcvp_xml.php', {lat: rdvlat, lng: rdvlng, rdv: rdvpoint, dest: dest, type: typecar, howmany: howMany, cb: cb, group: group, dep: dep, zip: zip, insee: insee, pass: 'true'}, function(xml){
 			$(xml).find('marker').each(function(){
 				var name = $(this).attr('name');
 				var address = $(this).attr('address');
@@ -2458,17 +2467,18 @@
 				var constructor = $(this).attr('constructor');
 				var model = $(this).attr('model');
 				var distance = $(this).attr('distance');
+				realcost = $(this).attr('realcost');
 				i = $(this).attr('count');
 				num_req = num_req+1;
 				var latlng = new google.maps.LatLng(lat2, lng2);
 				var display_name = 'VTC ' + name;
 				var cabIcon = 'visuels/taxi_loc_icon.png';
-				url = 'taxi=' + name + '&tel=' + address + '&idcourse=' + idcourse + '&num_req=' + num_req + '&rdvpoint=' + rdvpoint + '&lat=' + rdvlat + '&lng=' + rdvlng + '&comments=' + comments + '&cell=' + encodeURIComponent(cell) + '&when=' + when + '&date=' + date + '&operator=' + operator + '&dep='+dep+'&group=1&ack=0&db=1';
+				url = 'taxi=' + name + '&tel=' + address + '&idcourse=' + idcourse + '&num_req=' + num_req + '&rdvpoint=' + rdvpoint  + '&dest=' + dest  + '&prix=' + realcost + '&lat=' + rdvlat + '&lng=' + rdvlng + '&comments=' + comments + '&cell=' + encodeURIComponent(cell) + '&when=' + when + '&date=' + date + '&operator=' + operator + '&dep='+dep+'&group=1&ack=0&db=1';
 				url = url.replace(/'/g, "&rsquo;");
 				url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
 				var mymarker = mapEvent.addMarker({ id: i ,'position': latlng, 'bounds': true, 'title': name, 'icon': cabIcon }).click(function() {
 					//infoCont = '<div id="infoCont"><p style="color:#333;"><b>' + name + ' est &agrave; ' + parseFloat(distance).toFixed(1) + ' Km de vous.<br>' + address+ '</b></p></div>';
-					infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+name+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>tel : '+address+'</li><li>Marque : '+constructor+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Imatriculation : '+imat+'</li><li>Places : '+passengers+'</li></b></ul></div>';
+					infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+name+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>tel : '+address+'</li><li>Prix : '+realcost+'&euro;</li><li>Marque : '+constructor+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Imatriculation : '+imat+'</li><li>Places : '+passengers+'</li></b></ul></div>';
 					//callBtn='<button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-check cabs" id="' + i + '" onClick="sendJobOpen(\''+ url +'\')">Choisir</button>';
 					//mapEvent.openInfoWindow({ 'content':  infoCont+callBtn}, this);
 					mapEvent.openInfoWindow({ 'content':  infoCont}, this);
@@ -2479,6 +2489,7 @@
 				}
 				//mapEvent.addBounds(latlng);
 				$('#dblinks').append($('<input class="cabs" id="' + i + '" type="hidden" onclick="sendJob(\''+ url +'\')" />'));
+				cabAvail = true; // There is at least one available cab here
 			});
 			// NO Auctions...
 			/*
@@ -2495,8 +2506,16 @@
 		}, "xml").fail(function (jqXHR, textStatus, errorThrown) {
 			navigator.notification.alert('Erreur inconnue, le serveur ou la connexion internet sont indisponibles. ' + textStatus+', '+ errorThrown, alertDismissed, 'ChauffeursVTC Erreur', 'OK');
 		}).done(function () {
-			$('#dblinks').append($('<input id="stop" type="hidden" value="0" />'));
-			deliver();
+			if(!cabAvail) {
+				if(app) navigator.notification.alert('Nous n\'avons pas trouvé de VTC pour cette demande, il semblerait qu\'aucun vehicule correspondant à ces critères ne se trouve dans cette zone, désolé.', alertDismissed, 'ChauffeursVTC', 'OK');
+				else alert('Nous n\'avons pas trouvé de VTC pour cette demande, il semblerait qu\'aucun vehicule correspondant à ces critères ne se trouve dans cette zone, désolé.');
+				$.mobile.pageContainer.pagecontainer("change", "#infos", { transition: "slide"} );
+			}
+			else {
+				$('#dblinks').append($('<input id="stop" type="hidden" value="0" />'));
+				$('#jobCostMap').empty().append('Prix de la course: '+realcost+'&euro;'); // Affichage du prix en footer
+				deliver();
+			}
 		}).always(function () {
 			$.mobile.loading( "hide" );
 		});
@@ -2915,20 +2934,25 @@
                 	<thead><tr><th width="90%"></th><th width="10%"></th></tr></thead>
                     <tbody>
                 	<tr><td>
-                        <input type="text" id="addressInput" data-clear-btn="true" size="40" placeholder="Adresse RDV" title="Adresse RDV" width="90%" style="min-height:3em;"/>
+                        <input type="text" id="addressInput" data-clear-btn="true" size="40" placeholder="* Adresse RDV" title="Adresse RDV" width="90%" style="min-height:3em;"/>
                     </td><td align="center">
 						<img src="visuels/ico_geolocalisation.png" alt="Affiner ma position GPS" id="locateMeBtn" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/>
                         <!-- <button onClick="locateMe()" class="ui-btn ui-btn-c ui-icon-location ui-shadow-icon ui-btn-icon-notext ui-corner-all"></button> -->
                     </td></tr>
-                <input type="hidden" id="DestAddress" size="10" value="DESTINATION"/>
                 	<tr><td>
-                        <input type="text" id="Accurate" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *" title="Nom prénom, champs obligatoire" style="min-height:3em;"/>
+						<input type="text" id="DestAddress" data-clear-btn="true" size="40" placeholder="* Adresse Destination" title="Adresse RDV" width="90%" style="min-height:3em;" size="10"/>
+                    </td><td align="center">
+						<!-- <img src="visuels/ico_geolocalisation.png" alt="Affiner ma position GPS" id="locateMeBtn" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/> -->
+						&nbsp;
+                    </td></tr>
+                	<tr><td>
+                        <input type="text" id="Accurate" data-clear-btn="true" class="mustHave" size="32" placeholder="* Nom" title="Nom prénom, champs obligatoire" style="min-height:3em;"/>
                     </td><td align="center">
 						<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" alt="Chercher un ami dans mon carnet d'adresse et commander pour lui" style="max-width:45px;"/>
                         <!-- <button onClick="getContact()" class="ui-btn ui-btn-c ui-icon-edit ui-shadow-icon ui-btn-icon-notext ui-corner-all"></button> -->
                     </td></tr>
                 	<tr><td>
-                        <input type="tel" id="cellular" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *" title="Téléphone, champs obligatoire" style="min-height:3em;"/>
+                        <input type="tel" id="cellular" data-clear-btn="true" class="mustHave" size="20" placeholder="* Tel" title="Téléphone, champs obligatoire" style="min-height:3em;"/>
                     </td><td align="center">
                         <a href="#rememberMe" data-rel="popup" data-position-to="window" title="Dernières informations saisies">
 							<img src="visuels/ico_favori.png" width="100%" class="cursor" style="max-width:50px;"/>
@@ -3144,7 +3168,10 @@
 				<div id="dblinks">
 				</div>
 			</div>
-			<p><button type="button" class="cancel ui-btn ui-btn-b ui-shadow ui-corner-all ui-btn-icon-left ui-icon-delete" id="cancel" onClick="stopCall()" value=""> Retour / Annulation </button></p>
+			<p>
+				<div id="jobCostMap"></div>
+				<button type="button" class="cancel ui-btn ui-btn-b ui-shadow ui-corner-all ui-btn-icon-left ui-icon-delete" id="cancel" onClick="stopCall()" value=""> Retour / Annulation </button>
+			</p>
         </div>
     </div>
     <div data-role="page" data-theme="c" id="connect">
@@ -3327,8 +3354,8 @@
         </div>
         <div data-role="footer" id="footer_map" data-position="fixed" data-fullscreen="true">
             <center><p>
-            	Vous ne pouvez suivre un VTC que 30 minutes avant le RDV.<br>
-                Les positions sont actualis&eacute;es toutes les 30 secondes.
+                Les positions sont actualis&eacute;es toutes les 10 secondes.<br>
+            	<span style="font-size:x-small;">*Vous ne pouvez suivre un VTC que 30 minutes avant le RDV.</span>
 				<button onClick="goback('index.html')" class="ui-btn ui-btn-icon-left ui-corner-all ui-shadow ui-icon-power"><p style="font-size:16px"><b>Arr&ecirc;ter</b></p></button>
             </p></center>
         </div>
@@ -3417,6 +3444,12 @@
                         <input type="text" id="addressInput2" data-clear-btn="true" size="40" placeholder="Adresse RDV" width="90%"/>
                     </td><td align="center">
 						<img src="visuels/ico_geolocalisation.png" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/>
+                    </td></tr>
+                	<tr><td>
+						<input type="text" id="DestAddress2" data-clear-btn="true" size="40" placeholder="Adresse Destination" width="90%" style="min-height:3em;" size="10"/>
+                    </td><td align="center">
+						<!-- <img src="visuels/ico_geolocalisation.png" alt="Affiner ma position GPS" id="locateMeBtn" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/> -->
+						&nbsp;
                     </td></tr>
                 	<tr><td>
                         <input type="text" id="Accurate2" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *"/>
