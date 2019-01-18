@@ -156,7 +156,7 @@
 				$("body").empty().append('<img src="no_network.png" width="'+screen.width+'" height="'+screen.height+'" onClick="window.location.reload()" />');
 			}
 			openPdf = cordova.plugins.disusered.open;
-			/*
+			
 			// For Android => Enable background mode
 			cordova.plugins.backgroundMode.enable();
 			cordova.plugins.backgroundMode.setDefaults({
@@ -167,9 +167,9 @@
 			//cordova.plugins.backgroundMode.configure({
 			//	title:'App toujours en fonction (3 MINUTES MAX), nous vous informons des courses en cours...'
 			//});
-			*/
+			
 			// For iOS => backgroundtask
-			backgroundtask.start(bgFunctionToRun);
+			//backgroundtask.start(bgFunctionToRun);
 			// Efficient and batterie saving geolocation...
 			/* USING Plugin V3.X */
 			// BackgroundGeolocation is highly configurable. See platform specific configuration options 
@@ -1509,6 +1509,7 @@
 		let isAddr = document.getElementById("addressInput").value;
 		let isAddrDest = document.getElementById("DestAddress").value;
 		if(isAddr!='' && isAddrDest!='') {
+			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 			$.mobile.pageContainer.pagecontainer("change", pageToGo, { transition: "slide", reverse: true} );
 			/*
 			if (isPlaceChanged || (dep != '') || (zip != '')) {
@@ -1524,9 +1525,8 @@
 		else {
 			if(app) navigator.notification.alert('Veuillez renseigner une adresse de départ (ou attendre la fin de la géolocalisation), ainsi qu\'une adresse de destination SVP...', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Veuillez renseigner une adresse de départ (ou attendre la fin de la géolocalisation), ainsi qu\'une adresse de destination SVP...');
+			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 		}
-		$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
-		//$('#searchOpen').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 	}
 	function setZip() {
 		zip = $('#zipDep').val();
