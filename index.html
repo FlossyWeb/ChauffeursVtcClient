@@ -395,12 +395,25 @@
 	function handleOpenURL(url) {
 		setTimeout(function() {
 			//alert("received url: " + url);
-			toApp = $.urlParam('to', url); // PageToGo
+			var fromApp = $.urlParam('from', url); // AppName
+			var toApp = $.urlParam('to', url); // PageToGo
+			if(fromApp=='driver') {
+				$('#getBackDriver').append('<a href="#" onClick="myTaxiBack()" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-back">Retour app chauffeur</a>');
+			}
 			if(toApp=='history') {
 				//alert(toApp);
 				$.mobile.pageContainer.pagecontainer("change", "#"+toApp, { transition: "slide"} );
 			}
 		}, 600);
+	}
+	function myTaxiBack()
+	{
+		if (navigator.userAgent.toLowerCase().match(/android/)) {
+			window.open('montaxidriver://', '_system');
+		}
+		else {
+			window.open('mytaxidriver://', '_system');
+		}
 	}
 	var scanSuccess = function (result) {
 		var textFormats = "QR_CODE DATA_MATRIX";
@@ -2907,6 +2920,7 @@
          <li><a href="#" onClick="goScan()" data-transition="slide" class="ui-btn ui-btn-icon-left ui-icon-camera noAppHide"><b>Scanner un code</b></a></li>
         </ul>
         <button class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-power" onClick="dc()">D&eacute;connexion</button>
+		<div id="getBackDriver"></div>
     </div><!-- /panel -->
     <div data-role="page" data-theme="c" id="infos">
         <div data-role="header" class="header">
