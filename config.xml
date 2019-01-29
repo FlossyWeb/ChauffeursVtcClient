@@ -64,7 +64,7 @@
 	-->
 	<plugin name="cordova-plugin-statusbar" source="npm" />
 	<plugin name="cordova-plugin-whitelist" source="npm" />
-    <plugin name="cordova-open" spec="https://github.com/disusered/cordova-open#master" source="git" />  
+    <plugin name="cordova-open" spec="https://github.com/disusered/cordova-open#develop" source="git" />  
 	<!-- 
 	<plugin name="cordova-open" source="npm" spec="1.0.12" />
     <plugin name="cordova-android-support-gradle-release" spec="https://github.com/dpa99c/cordova-android-support-gradle-release" source="git" />  
