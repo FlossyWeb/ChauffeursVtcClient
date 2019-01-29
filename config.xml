@@ -64,8 +64,9 @@
 	-->
 	<plugin name="cordova-plugin-statusbar" source="npm" />
 	<plugin name="cordova-plugin-whitelist" source="npm" />
-	<plugin name="cordova-open" source="npm" spec="1.0.12" />
+    <plugin name="cordova-open" spec="https://github.com/disusered/cordova-open" source="git" />  
 	<!-- 
+	<plugin name="cordova-open" source="npm" spec="1.0.12" />
     <plugin name="cordova-android-support-gradle-release" spec="https://github.com/dpa99c/cordova-android-support-gradle-release" source="git" />  
 	<plugin name="cordova-plugin-facebook4" spec="https://github.com/jeduan/cordova-plugin-facebook4" source="git">
 	<plugin name="cordova-plugin-mauron85-background-geolocation" source="npm" spec="3.0.0-alpha.48">
