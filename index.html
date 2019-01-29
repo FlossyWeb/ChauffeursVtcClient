@@ -463,6 +463,22 @@
 		alert('Undefined error');
 	  }
 	}
+	function progress(progressEvent) {
+		if (progressEvent.lengthComputable) {
+			var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+			// update UI with status, for example:
+			// statusDom.innerHTML = perc + "% loaded...";
+		} else {
+			// download does not offer a length... just show dots
+			/*
+			   if(statusDom.innerHTML == "") {
+			   statusDom.innerHTML = "Loading";
+			   } else {
+			   statusDom.innerHTML += ".";
+			   }
+			 */
+		}
+	}
 	function Share()
 	{
 		window.plugins.ContactPicker.chooseContact(function(contactInfo) {
@@ -3222,7 +3238,7 @@
                 </div>
                 <p><a href="#" onClick="openSomeUrl('https://goo.gl/Bz4yK0')">Le.Taxi &ccedil;a marche comment? &Ccedil;a change quoi ?</a></p>
 				-->
-                <p><a href="#" onClick="openPdf('https://www.chauffeursvtc.com/client/docs/privacy.policy.pdf', successOpenPdf, errorOpenPdf)">Politique de confidentialit&eacute;</a></p>
+                <p><a href="#" onClick="openPdf('https://www.chauffeursvtc.com/client/docs/privacy.policy.pdf', successOpenPdf, errorOpenPdf, progress)">Politique de confidentialit&eacute;</a></p>
                 <div id="fogotReturns"></div>
 				<a href="mailto:contact@chauffeursvtc.com" class="ui-btn ui-btn-icon-left ui-icon-mail  ui-shadow-icon ui-corner-all">Nous contacter</a>
 			</div>
@@ -3249,7 +3265,7 @@
                 <div id="subReturns"></div>
 				<p>&nbsp;</p>
                 <!-- <p><a href="#" onClick="openSomeUrl('https://goo.gl/Bz4yK0')">Le.Taxi &ccedil;a marche comment? &Ccedil;a change quoi ?</a></p> -->
-                <p><a href="#" onClick="openPdf('https://www.chauffeursvtc.com/client/docs/privacy.policy.pdf', successOpenPdf, errorOpenPdf)">Politique de confidentialit&eacute;</a></p>
+                <p><a href="#" onClick="openPdf('https://www.chauffeursvtc.com/client/docs/privacy.policy.pdf', successOpenPdf, errorOpenPdf, progress)">Politique de confidentialit&eacute;</a></p>
                 </center>
             </div>
         </div>
@@ -3283,7 +3299,7 @@
                 <input type="password" id="accPwd" data-clear-btn="true" size="40" placeholder="Mot de passe"/>
                 <button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-edit" onClick="accountMod()">Modifier</button>
                 <div id="accReturns"></div>
-				<p><a href="#" onClick="openPdf('https://www.chauffeursvtc.com/client/docs/privacy.policy.pdf', successOpenPdf, errorOpenPdf)">Politique de confidentialit&eacute;</a></p>
+				<p><a href="#" onClick="openPdf('https://www.chauffeursvtc.com/client/docs/privacy.policy.pdf', successOpenPdf, errorOpenPdf, progress)">Politique de confidentialit&eacute;</a></p>
                 </center>
            </div>
         </div>

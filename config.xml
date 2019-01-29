@@ -64,7 +64,7 @@
 	-->
 	<plugin name="cordova-plugin-statusbar" source="npm" />
 	<plugin name="cordova-plugin-whitelist" source="npm" />
-    <plugin name="cordova-open" spec="https://github.com/disusered/cordova-open" source="git" />  
+    <plugin name="cordova-open" spec="https://github.com/disusered/cordova-open#master" source="git" />  
 	<!-- 
 	<plugin name="cordova-open" source="npm" spec="1.0.12" />
     <plugin name="cordova-android-support-gradle-release" spec="https://github.com/dpa99c/cordova-android-support-gradle-release" source="git" />  
@@ -190,7 +190,7 @@
     <platform name="android">
 		<preference name="android-build-tool" value="gradle" />
 		<preference name="android-minSdkVersion" value="16" />
-		<preference name="android-targetSdkVersion" value="23" />
+		<preference name="android-targetSdkVersion" value="26" />
         <preference name="SplashMaintainAspectRatio" value="true"/>
         <preference name="SplashShowOnlyFirstTime" value="true"/>
 		<!-- <framework src="com.facebook.android:facebook-android-sdk:4.25.0" /> -->
