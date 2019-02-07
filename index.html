@@ -458,9 +458,9 @@
 	}
 	function errorOpenPdf(code) {
 	  if (code === 1) {
-		alert('No file handler found');
+		console.log('No file handler found');
 	  } else {
-		alert('Undefined error');
+		console.log('Undefined error');
 	  }
 	}
 	function progress(progressEvent) {
@@ -1754,7 +1754,7 @@
 			time = setInterval( function () {
 				var stoper = document.getElementById('stop').value;
 				if (stoper != 1) {$('#dblinks #' + index).trigger('click');}
-				if ((index > 10) || (stoper == 1) || stopCheckAnswer) {
+				if ((index > 9) || (stoper == 1) || stopCheckAnswer) {
 					// THIS ONE IS THE 0000 CAB AND LAST ONE SO...
 					clearInterval(time); // Clears the current Interval
 					clearInterval(refreshOpenMarkers); // Clears the current Interval
