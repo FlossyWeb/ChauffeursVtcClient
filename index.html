@@ -1094,6 +1094,8 @@
 	});
 	function bookingMod()
 	{		
+		$('#bookingMod').button('disable');
+		$.mobile.loading( "show" );
 		var newAdd = $('#addressInput2').val();
 		var newDest = $('#DestAddress2').val();
 		var newName = $('#Accurate2').val();
@@ -1133,7 +1135,11 @@
 					else alert('Tarif annoncé : '+data.prix+' €');
 					$.mobile.pageContainer.pagecontainer("change", "#book_page", { transition: "slide"} );
 				}
-			}, "json");
+			}, "json").always(function () {
+				// reenable the inputs
+				$('#bookingMod').button('enable');
+				$.mobile.loading( "hide" );
+			});
 		}
 		else if(newWhen=='') {
 			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une date de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
@@ -1150,6 +1156,89 @@
 		else {
 			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la réservation, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!');
+		}
+	}
+	function modDrunk(recidcourse, recrdv, recdest, reccell, recwhen, recdep)
+	{		
+		//$('#addressInput3').val(recrdv);
+		$('#DestAddress3').text(recdest);
+		$('#Accurate3').val(nom);
+		$('#cellular3').val(reccell);
+		//$('#date3').val(recwhen);
+		$('#modId3').val(recidcourse);
+		$('#modDep3').val(recdep);
+		$.mobile.pageContainer.pagecontainer("change", "#modDrunk", { transition: "slide"} );
+	}
+	$( '#modDrunk' ).live( 'pagecreate',function(event){
+		$('.expends3').click(function () {
+			$(this).next('div').slideToggle('slow');
+			//$.mobile.silentScroll($(this).next('div').offset().top);
+		});
+	});
+	function drinkingMod()
+	{		
+		$('#drinkingMod').button('disable');
+		$.mobile.loading( "show" );
+		var newAdd = $('#addressInput3').val();
+		var newDest = $('#DestAddress3').val();
+		var newName = $('#Accurate3').val();
+		var newCell = $('#cellular3').val();
+		var newHowMany = $('#howMany3').val();
+		var newType = $('#CarType3').val();
+		var newCb = $('#Pay3').val();
+		var newWhen = $('#date3').val();
+		var newId = $('#modId3').val();
+		var newDep = $('#modDep3').val();
+		var payment = "Non";
+		if(newCb == 1) {
+			payment = "Oui";
+		}
+		var newComs = document.getElementById("coms3").value.replace(/'/g, "&rsquo;");
+		var comments1 = '<ul><li>Nom du client : ' + newName + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + newHowMany + '</li><li>Type de vehicule : ' + newType + '</li>';
+		if (newComs != '') {
+			var comments2 = '<li>' + newComs + '</li></ul>';
+		}
+		else {
+			var comments2 = '</ul>';
+		}
+		var comments = comments1+comments2;
+		url = 'taxi=0000&tel=0000000000&idcourse=' + newId + '&rdvpoint=' + newAdd + '&dest=' + newDest + '&comments=' + comments + '&cell=' + encodeURIComponent(newCell) + '&when=' + newWhen+ '&howmany=' + newHowMany + '&dep=' + newDep+'&db=1';
+		//navigator.notification.alert(url);
+		url = url.replace(/'/g, "&rsquo;");
+		url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
+		if(newWhen!='' && newAdd!='' && newDest!='') {
+			$.post("https://www.chauffeursvtc.com/appserver/drinking_app_mod.php", url, function(data) {
+				//$('#resmodrink').append(data.req);
+				if(!data.ok) {
+					if(app) navigator.notification.alert('Vous ne pouvez modifier la course !!', alertDismissed, 'ChauffeursVTC', 'OK');
+					else alert('Vous ne pouvez modifier la course !!');
+				}
+				else {
+					if(app) navigator.notification.alert('Tarif annoncé : '+data.prix+' €', alertDismissed, 'ChauffeursVTC', 'OK');
+					else alert('Tarif annoncé : '+data.prix+' €');
+					$.mobile.pageContainer.pagecontainer("change", "#history", { transition: "slide"} );
+				}
+			}, "json").always(function () {
+				// reenable the inputs
+				$('#drinkingMod').button('enable');
+				$.mobile.loading( "hide" );
+			});
+		}
+		else if(newWhen=='') {
+			if(app) navigator.notification.alert('Afin de modifier la course, vous devez renseigner une date de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Afin de modifier la course, vous devez renseigner une date de RDV !!');
+		}
+		else if(newAdd=='') {
+			if(app) navigator.notification.alert('Afin de modifier la course, vous devez renseigner une adresse de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Afin de modifier la course, vous devez renseigner une adresse de RDV !!');
+		}
+		else if(newDest=='') {
+			if(app) navigator.notification.alert('Afin de modifier la course, vous devez renseigner une adresse de destination !!', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Afin de modifier la course, vous devez renseigner une adresse de destination !!');
+		}
+		else {
+			if(app) navigator.notification.alert('Afin de modifier la course, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Afin de modifier la course, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!');
 		}
 	}
 	function delCmd(id, deldep)
@@ -1403,6 +1492,7 @@
 				// Reverse geocoding is OK...
 				$('#addressInput').val(data.features[0].properties.label);
 				$('#addressInput2').val(data.features[0].properties.label);
+				$('#addressInput3').val(data.features[0].properties.label);
 				$('#addressInputPrices').val(data.features[0].properties.label);
 				insee = data.features[0].properties.citycode;
 				zip = data.features[0].properties.postcode;
@@ -3499,7 +3589,7 @@
                     </tbody>
                 </table>
                 <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
-                <p class="expends"><b>D&eacute;tails</b><br><img src="visuels/dots.png" width="100%" style="max-width:1200px;"/></p>
+                <p class="expends2"><b>D&eacute;tails</b><br><img src="visuels/dots.png" width="100%" style="max-width:1200px;"/></p>
                 <div id="details">
                     <label for="howMany">Nombre de passagers :</label>
                     <input name="howMany" id="howMany2" min="1" max="8" value="1" data-theme="c" data-show-value="true" data-popup-enabled="true" type="range">
@@ -3531,6 +3621,85 @@
                 <input type="hidden" id="modDep" size="2" value=""/>
 				<div id="resmod"></div>
                 <button onClick="bookingMod()" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" id="bookingMod">Modifier la r&eacute;servation</button>
+            </div>
+            </center>
+        </div>
+    </div>
+	<div data-role="page" data-theme="c" id="modDrunk">
+        <div data-role="header" data-position="fixed" class="header">
+			<table width="100%" border="0" class="header_cont">
+				<thead><tr><th width="50%"></th><th width="14%"></th><th width="36%"></th></tr></thead>
+				<tbody>
+				<tr><td>
+					<img src="visuels/header.png" width="100%" style="max-width:500px;"/>
+				</td><td>
+					<p>&nbsp;</p>
+				</td><td align="center">
+					<a href="#history" class="ui-btn ui-btn-icon-left ui-corner-all ui-shadow ui-icon-back"><p style="font-size:16px"><b>Retour</b></p></a>
+				</td></tr>
+				</tbody>
+			</table>
+		</div>
+        <div class="ui-content" role="main">
+            <center>
+            <div style="padding:1em; margin-top:1em; display:block;">
+                <!-- <h1 class="hostname">Commander un VTC</h1> -->
+                <table width="100%" border="0">
+                	<thead><tr><th width="90%"></th><th width="10%"></th></tr></thead>
+                    <tbody>
+                	<tr><td>
+                        <input type="text" id="addressInput3" data-clear-btn="true" size="40" placeholder="Adresse RDV" width="90%"/>
+                    </td><td align="center">
+						<img src="visuels/ico_geolocalisation.png" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/>
+                    </td></tr>
+                	<tr><td>
+						<input type="text" id="DestAddress3" data-clear-btn="true" size="40" placeholder="Adresse Destination" width="90%" style="min-height:3em;" size="10"/>
+                    </td><td align="center">
+						<!-- <img src="visuels/ico_geolocalisation.png" alt="Affiner ma position GPS" id="locateMeBtn" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/> -->
+						&nbsp;
+                    </td></tr>
+                	<tr><td>
+                        <input type="text" id="Accurate3" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *"/>
+                    </td><td align="center">
+						<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" style="max-width:45px;"/>
+                    </td></tr>
+                	<tr><td>
+                        <input type="tel" id="cellular3" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *"/>
+                    </tbody>
+                </table>
+                <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
+                <p class="expends3"><b>D&eacute;tails</b><br><img src="visuels/dots.png" width="100%" style="max-width:1200px;"/></p>
+                <div id="details">
+                    <label for="howMany">Nombre de passagers :</label>
+                    <input name="howMany" id="howMany3" min="1" max="8" value="1" data-theme="c" data-show-value="true" data-popup-enabled="true" type="range">
+                    <select id="CarType3"> 
+                        <option value="Berline" selected>Vehicule</option>
+                        <option value="Berline">Berline</option>
+                        <option value="Break">Break</option>
+                        <option value="Van">Monospace</option>
+                    </select>
+                    <select id="Pay3"> 
+                        <option value="0" selected>CB</option>
+                        <option value="0">Non</option>
+                        <option value="1">Oui</option>
+                    </select>
+                    <textarea id="coms3" placeholder="Commentaires"></textarea>
+                </div>
+                <!-- 
+                <p id="datelabel"><b>Date et heure du RDV :</b></p>
+                <input type="text" id="date3" placeholder="Date" data-clear-btn="true" data-inline="true" value=""/>
+                <span style="display:inline-block;width: 48%;">
+                    <input type="date" id="date3" placeholder="Date" data-clear-btn="true" data-inline="true" value=""/>
+                </span>
+                <span style="display:inline-block;width: 48%;">
+                    <input type="time" id="when3" placeholder="Heure" data-clear-btn="true" data-inline="true" value=""/>
+                </span>
+                -->
+                <p>&nbsp;</p>
+                <input type="hidden" id="modId" size="20" value=""/>
+                <input type="hidden" id="modDep" size="2" value=""/>
+				<div id="resmodrink"></div>
+                <button onClick="drinkingMod()" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" id="drinkingMod">Modifier la r&eacute;servation</button>
             </div>
             </center>
         </div>
