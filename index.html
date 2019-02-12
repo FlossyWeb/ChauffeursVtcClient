@@ -216,6 +216,7 @@
 							// Reverse geocoding is OK...
 							$('#addressInput').val(data.features[0].properties.label);
 							$('#addressInput2').val(data.features[0].properties.label);
+							$('#addressInput3').val(data.features[0].properties.label);
 							$('#addressInputPrices').val(data.features[0].properties.label);
 							//insee = data.features[0].properties.citycode;
 							//zip = data.features[0].properties.postcode;
@@ -297,6 +298,7 @@
 						// Reverse geocoding is OK...
 						$('#addressInput').val(data.features[0].properties.label);
 						$('#addressInput2').val(data.features[0].properties.label);
+						$('#addressInput3').val(data.features[0].properties.label);
 						$('#addressInputPrices').val(data.features[0].properties.label);
 						insee = data.features[0].properties.citycode;
 						zip = data.features[0].properties.postcode;
@@ -1094,7 +1096,7 @@
 	});
 	function bookingMod()
 	{		
-		$('#bookingMod').button('disable');
+		$('#bookingMod').attr('disable', true);
 		$.mobile.loading( "show" );
 		var newAdd = $('#addressInput2').val();
 		var newDest = $('#DestAddress2').val();
@@ -1137,23 +1139,31 @@
 				}
 			}, "json").always(function () {
 				// reenable the inputs
-				$('#bookingMod').button('enable');
+				$('#bookingMod').attr('disable', false);
 				$.mobile.loading( "hide" );
 			});
 		}
 		else if(newWhen=='') {
+			$('#bookingMod').attr('disable', false);
+			$.mobile.loading( "hide" );
 			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une date de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la réservation, vous devez renseigner une date de RDV !!');
 		}
 		else if(newAdd=='') {
+			$('#bookingMod').attr('disable', false);
+			$.mobile.loading( "hide" );
 			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une adresse de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la réservation, vous devez renseigner une adresse de RDV !!');
 		}
 		else if(newDest=='') {
+			$('#bookingMod').attr('disable', false);
+			$.mobile.loading( "hide" );
 			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une adresse de destination !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la réservation, vous devez renseigner une adresse de destination !!');
 		}
 		else {
+			$('#bookingMod').attr('disable', false);
+			$.mobile.loading( "hide" );
 			if(app) navigator.notification.alert('Afin de modifier la réservation, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la réservation, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!');
 		}
@@ -1161,7 +1171,7 @@
 	function modDrunk(recidcourse, recrdv, recdest, reccell, recwhen, recdep)
 	{		
 		//$('#addressInput3').val(recrdv);
-		$('#DestAddress3').text(recdest);
+		$('#DestAddress3').val(recdest);
 		$('#Accurate3').val(nom);
 		$('#cellular3').val(reccell);
 		//$('#date3').val(recwhen);
@@ -1170,14 +1180,21 @@
 		$.mobile.pageContainer.pagecontainer("change", "#modDrunk", { transition: "slide"} );
 	}
 	$( '#modDrunk' ).live( 'pagecreate',function(event){
+		let options = {
+		  componentRestrictions: {country: 'fr'}
+		};
+		let rdvInput = document.getElementById('addressInput3');
+		let autocompleteRdv = new google.maps.places.Autocomplete(rdvInput, options);
+		let destInput = document.getElementById('DestAddress3');
+		let autocompleteDest = new google.maps.places.Autocomplete(destInput, options);
 		$('.expends3').click(function () {
 			$(this).next('div').slideToggle('slow');
 			//$.mobile.silentScroll($(this).next('div').offset().top);
 		});
 	});
 	function drinkingMod()
-	{		
-		$('#drinkingMod').button('disable');
+	{
+		$('#drinkingMod').attr('disable', true);
 		$.mobile.loading( "show" );
 		var newAdd = $('#addressInput3').val();
 		var newDest = $('#DestAddress3').val();
@@ -1186,7 +1203,8 @@
 		var newHowMany = $('#howMany3').val();
 		var newType = $('#CarType3').val();
 		var newCb = $('#Pay3').val();
-		var newWhen = $('#date3').val();
+		//var newWhen = $('#date3').val();
+		var newWhen = "";
 		var newId = $('#modId3').val();
 		var newDep = $('#modDep3').val();
 		var payment = "Non";
@@ -1206,7 +1224,7 @@
 		//navigator.notification.alert(url);
 		url = url.replace(/'/g, "&rsquo;");
 		url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
-		if(newWhen!='' && newAdd!='' && newDest!='') {
+		if(newAdd!='' && newDest!='') {
 			$.post("https://www.chauffeursvtc.com/appserver/drinking_app_mod.php", url, function(data) {
 				//$('#resmodrink').append(data.req);
 				if(!data.ok) {
@@ -1217,26 +1235,29 @@
 					if(app) navigator.notification.alert('Tarif annoncé : '+data.prix+' €', alertDismissed, 'ChauffeursVTC', 'OK');
 					else alert('Tarif annoncé : '+data.prix+' €');
 					$.mobile.pageContainer.pagecontainer("change", "#history", { transition: "slide"} );
+					refreshHist();
 				}
 			}, "json").always(function () {
 				// reenable the inputs
-				$('#drinkingMod').button('enable');
+				$('#drinkingMod').attr('disable', false);
 				$.mobile.loading( "hide" );
 			});
 		}
-		else if(newWhen=='') {
-			if(app) navigator.notification.alert('Afin de modifier la course, vous devez renseigner une date de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
-			else alert('Afin de modifier la course, vous devez renseigner une date de RDV !!');
-		}
 		else if(newAdd=='') {
+			$('#drinkingMod').attr('disable', false);
+			$.mobile.loading( "hide" );
 			if(app) navigator.notification.alert('Afin de modifier la course, vous devez renseigner une adresse de RDV !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la course, vous devez renseigner une adresse de RDV !!');
 		}
 		else if(newDest=='') {
+			$('#drinkingMod').attr('disable', false);
+			$.mobile.loading( "hide" );
 			if(app) navigator.notification.alert('Afin de modifier la course, vous devez renseigner une adresse de destination !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la course, vous devez renseigner une adresse de destination !!');
 		}
 		else {
+			$('#drinkingMod').attr('disable', false);
+			$.mobile.loading( "hide" );
 			if(app) navigator.notification.alert('Afin de modifier la course, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Afin de modifier la course, vous devez renseigner une date de RDV ainsi que les adresse de départ et d\'arrivée !!');
 		}
@@ -1536,6 +1557,7 @@
 				if (results[0]) {
 					$('#addressInput').val(results[0].formatted_address);
 					$('#addressInput2').val(results[0].formatted_address);
+					$('#addressInput3').val(results[0].formatted_address);
 					for(var i=0; i < results[0].address_components.length; i++)
 					{
 						var component = results[0].address_components[i];
@@ -3347,9 +3369,9 @@
             <div style="padding:1em; display:block;">
             	<center>
 				<img src="visuels/logo_montaxi.png" width="60%" style="max-width:512px;"/>
-                <input type="text" id="subName" data-clear-btn="true" size="40" placeholder="Nom"/>
-                <input type="email" id="subMail" data-clear-btn="true" size="40" placeholder="Email"/>
-                <input type="tel" id="subTel" data-clear-btn="true" size="40" placeholder="Tel (Sans espace SVP)"/>
+                <input type="text" id="subName" data-clear-btn="true" size="40" placeholder="Nom" style="min-height:3em;"/>
+                <input type="email" id="subMail" data-clear-btn="true" size="40" placeholder="Email" style="min-height:3em;"/>
+                <input type="tel" id="subTel" data-clear-btn="true" size="40" placeholder="Tel (Sans espace SVP)" style="min-height:3em;"/>
                 <button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-check" onClick="subscribe()">Inscription</button>
                 <div id="data"></div>
                 <div id="subReturns"></div>
@@ -3383,10 +3405,10 @@
         <div class="ui-content" role="main">
             <div style="padding:1em; display:block;">
             	<center>
-                <input type="tel" id="accTel" data-clear-btn="true" size="40" placeholder="Tel (Sans espace SVP)"/>
-                <input type="text" id="accName" data-clear-btn="true" size="40" placeholder="Nom"/>
-                <input type="email" id="accMail" data-clear-btn="true" size="40" placeholder="Email"/>
-                <input type="password" id="accPwd" data-clear-btn="true" size="40" placeholder="Mot de passe"/>
+                <input type="tel" id="accTel" data-clear-btn="true" size="40" placeholder="Tel (Sans espace SVP)" style="min-height:3em;"/>
+                <input type="text" id="accName" data-clear-btn="true" size="40" placeholder="Nom" style="min-height:3em;"/>
+                <input type="email" id="accMail" data-clear-btn="true" size="40" placeholder="Email" style="min-height:3em;"/>
+                <input type="password" id="accPwd" data-clear-btn="true" size="40" placeholder="Mot de passe" style="min-height:3em;"/>
                 <button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-edit" onClick="accountMod()">Modifier</button>
                 <div id="accReturns"></div>
 				<p><a href="#" onClick="openPdf('https://www.chauffeursvtc.com/client/docs/privacy.policy.pdf', successOpenPdf, errorOpenPdf, progress)">Politique de confidentialit&eacute;</a></p>
@@ -3569,7 +3591,7 @@
                 	<thead><tr><th width="90%"></th><th width="10%"></th></tr></thead>
                     <tbody>
                 	<tr><td>
-                        <input type="text" id="addressInput2" data-clear-btn="true" size="40" placeholder="Adresse RDV" width="90%"/>
+                        <input type="text" id="addressInput2" data-clear-btn="true" size="40" placeholder="Adresse RDV" width="90%" style="min-height:3em;"/>
                     </td><td align="center">
 						<img src="visuels/ico_geolocalisation.png" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/>
                     </td></tr>
@@ -3580,12 +3602,12 @@
 						&nbsp;
                     </td></tr>
                 	<tr><td>
-                        <input type="text" id="Accurate2" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *"/>
+                        <input type="text" id="Accurate2" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *" style="min-height:3em;"/>
                     </td><td align="center">
 						<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" style="max-width:45px;"/>
                     </td></tr>
                 	<tr><td>
-                        <input type="tel" id="cellular2" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *"/>
+                        <input type="tel" id="cellular2" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *" style="min-height:3em;"/>
                     </tbody>
                 </table>
                 <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
@@ -3648,7 +3670,7 @@
                 	<thead><tr><th width="90%"></th><th width="10%"></th></tr></thead>
                     <tbody>
                 	<tr><td>
-                        <input type="text" id="addressInput3" data-clear-btn="true" size="40" placeholder="Adresse RDV" width="90%"/>
+                        <input type="text" id="addressInput3" data-clear-btn="true" size="40" placeholder="Adresse RDV" width="90%" style="min-height:3em;"/>
                     </td><td align="center">
 						<img src="visuels/ico_geolocalisation.png" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/>
                     </td></tr>
@@ -3659,12 +3681,12 @@
 						&nbsp;
                     </td></tr>
                 	<tr><td>
-                        <input type="text" id="Accurate3" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *"/>
+                        <input type="text" id="Accurate3" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *" style="min-height:3em;"/>
                     </td><td align="center">
 						<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" style="max-width:45px;"/>
                     </td></tr>
                 	<tr><td>
-                        <input type="tel" id="cellular3" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *"/>
+                        <input type="tel" id="cellular3" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *" style="min-height:3em;"/>
                     </tbody>
                 </table>
                 <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
@@ -3696,8 +3718,8 @@
                 </span>
                 -->
                 <p>&nbsp;</p>
-                <input type="hidden" id="modId" size="20" value=""/>
-                <input type="hidden" id="modDep" size="2" value=""/>
+                <input type="hidden" id="modId3" size="20" value=""/>
+                <input type="hidden" id="modDep3" size="2" value=""/>
 				<div id="resmodrink"></div>
                 <button onClick="drinkingMod()" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" id="drinkingMod">Modifier la r&eacute;servation</button>
             </div>
