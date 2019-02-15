@@ -86,6 +86,8 @@
 	var dontReg = false;
 	var mobileMap = { 'center': '47.2, 2.5', 'zoom': 6 };
 	var isPlaceChanged = true; // Assuming geolocation will get zip unless address is tipped at last
+	var isAddressTyped = false;
+	var isAddressPricesTyped = false;
 	var zipChecked = false;
 	var hail_id = "";
 	var taxi_phone_number;
@@ -176,12 +178,12 @@
 			BackgroundGeolocation.configure({
 				locationProvider: BackgroundGeolocation.ACTIVITY_PROVIDER, // ACTIVITY_PROVIDER, DISTANCE_FILTER_PROVIDER OR RAW_PROVIDER
 				desiredAccuracy: BackgroundGeolocation.HIGH_ACCURACY,
-				stationaryRadius: 100,
-				distanceFilter: 100,
+				stationaryRadius: 10,
+				distanceFilter: 10,
 				activityType: 'Fitness',
 				debug: false,
-				interval: 120000,
-				fastestInterval: 120000,
+				interval: 60000,
+				fastestInterval: 10000,
 				activitiesInterval: 10000,
 				saveBatteryOnBackground : true,
 				stopOnStillActivity : false,
@@ -214,10 +216,10 @@
 						//alert(data.features[0].properties.label+' - '+data.features[0].properties.postcode);
 						if(data.features[0].properties.label!='baninfo') {
 							// Reverse geocoding is OK...
-							$('#addressInput').val(data.features[0].properties.label);
-							$('#addressInput2').val(data.features[0].properties.label);
-							$('#addressInput3').val(data.features[0].properties.label);
-							$('#addressInputPrices').val(data.features[0].properties.label);
+							if(!isAddressTyped) $('#addressInput').val(data.features[0].properties.label);
+							//$('#addressInput2').val(data.features[0].properties.label);
+							//$('#addressInput3').val(data.features[0].properties.label);
+							if(!isAddressPricesTyped) $('#addressInputPrices').val(data.features[0].properties.label);
 							//insee = data.features[0].properties.citycode;
 							zip = data.features[0].properties.postcode;
 							dep = zip.substring(0, 2);
@@ -1343,8 +1345,9 @@
 		//let autocompleteDest = new google.maps.places.Autocomplete(destInput);
 		let autocompleteDest = new google.maps.places.Autocomplete(destInput, options);
         $("#addressInput").keydown(function () {
-			// Place is tiped into field and not chosen from the api responses
+			// Place is typed into field and not chosen from the api responses
             isPlaceChanged = false;
+            isAddressTyped = true;
         });
 		if(!app) {
 			if(($.localStorage.getItem('registeredUser') != 1) && ($.localStorage.getItem('registeredUser') != 'OK'))
@@ -1494,6 +1497,10 @@
 			}
 		});
 		var autocomplete2 = new google.maps.places.Autocomplete(input2, options);
+        $("#addressInputPrices").keydown(function () {
+			// Place is typed into field and not chosen from the api responses
+            isAddressPricesTyped = true;
+        });
 	});
 	function getRandomInt(min, max) {
 		/*
@@ -1527,8 +1534,8 @@
 			if(data.features[0].properties.label!='baninfo') {
 				// Reverse geocoding is OK...
 				$('#addressInput').val(data.features[0].properties.label);
-				$('#addressInput2').val(data.features[0].properties.label);
-				$('#addressInput3').val(data.features[0].properties.label);
+				//$('#addressInput2').val(data.features[0].properties.label);
+				//$('#addressInput3').val(data.features[0].properties.label);
 				$('#addressInputPrices').val(data.features[0].properties.label);
 				insee = data.features[0].properties.citycode;
 				zip = data.features[0].properties.postcode;
@@ -1571,8 +1578,9 @@
 			{
 				if (results[0]) {
 					$('#addressInput').val(results[0].formatted_address);
-					$('#addressInput2').val(results[0].formatted_address);
-					$('#addressInput3').val(results[0].formatted_address);
+					//$('#addressInput2').val(results[0].formatted_address);
+					//$('#addressInput3').val(results[0].formatted_address);
+					$('#addressInputPrices').val(results[0].formatted_address);
 					for(var i=0; i < results[0].address_components.length; i++)
 					{
 						var component = results[0].address_components[i];
