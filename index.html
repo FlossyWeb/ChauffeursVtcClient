@@ -965,9 +965,9 @@
 			var typecar = document.getElementById("CarType").value;
 			var cb = document.getElementById("Pay").value;
 			var bag = document.getElementById("Logage").value;
-			var bagYesNo = (bag) ? 'Oui' : 'Non';
+			var bagYesNo = (bag==1) ? 'Oui' : 'Non';
 			var pet = document.getElementById("Pet").value;
-			var pets = (pet) ? 'Oui' : 'Non';
+			var pets = (pet==1) ? 'Oui' : 'Non';
 			var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Animaux : ' + pets + '</li><li>Type de vehicule : ' + typecar + '</li>';
 			var group = document.getElementById("group").value;
 			switch (cb) {
@@ -985,7 +985,7 @@
 				  break;
 				default:
 					var payment = "CB / VISA";
-					cb = 1;
+					cb = '';
 			}
 			var coms = document.getElementById("coms").value.replace(/'/g, "&rsquo;");
 			var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Animaux : ' + pets + '</li><li>Type de vehicule : ' + typecar + '</li>';
@@ -1037,7 +1037,7 @@
 			//url = url.replace(/'/g, "&rsquo;"); // if we escape with &rsquo; it will break the url adding a new var &...
 			url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
 			//alert(url);
-			if(rdvpoint!='' && dest!='') {
+			if(rdvpoint!='' && dest!='' && cb!='') {
 				$.post("https://www.chauffeursvtc.com/appserver/bookings_app_share.php", url, function(data) {
 					if(!data.ok) {
 						//navigator.notification.alert('Vous ne pouvez reserver un taxi que si le RDV est dans plus de 60 minutes !!');
@@ -1067,10 +1067,15 @@
 					$('#booking').prop('disabled', false).removeClass('ui-disabled');
 				});
 			}
+			else if(cb=='') {
+				$('#booking').prop('disabled', false).removeClass('ui-disabled');
+				if(app) navigator.notification.alert('Veuillez préciser un moyen de paiement SVP...', alertDismissed, 'ChauffeursVTC', 'OK');
+				else alert('Veuillez préciser un moyen de paiement SVP...');
+			}
 			else {
 				$('#booking').prop('disabled', false).removeClass('ui-disabled');
-				if(app) navigator.notification.alert('Vous devez renseigner les adresses de RDV et de destination.', alertDismissed, 'ChauffeursVTC', 'OK');
-				else alert('Vous devez renseigner les adresses de RDV et de destination.');
+				if(app) navigator.notification.alert('Veuillez renseigner une adresse de départ (ou attendre la fin de la géolocalisation), ainsi qu\'une adresse de destination SVP...', alertDismissed, 'ChauffeursVTC', 'OK');
+				else alert('Veuillez renseigner une adresse de départ (ou attendre la fin de la géolocalisation), ainsi qu\'une adresse de destination SVP...');
 			}
 		}
 		else {
@@ -1130,12 +1135,12 @@
 		var newWhen = $('#date2').val();
 		var newId = $('#modId').val();
 		var newDep = $('#modDep').val();
-		var payment = "Esp&egrave;ces";
+		var payment = "ESPECES";
 		if(newCb == 1) {
 			payment = "CB / VISA";
 		}
 		var newBag = document.getElementById("Logage2").value;
-		var bagYesNo = (newBag) ? 'Oui' : 'Non';
+		var bagYesNo = (newBag==1) ? 'Oui' : 'Non';
 		var newComs = document.getElementById("coms2").value.replace(/'/g, "&rsquo;");
 		var comments1 = '<ul><li>Nom du client : ' + newName + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + newHowMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Type de vehicule : ' + newType + '</li>';
 		if (newComs != '') {
@@ -1231,12 +1236,12 @@
 		var newWhen = "";
 		var newId = $('#modId3').val();
 		var newDep = $('#modDep3').val();
-		var payment = "Esp&egrave;ces";
+		var payment = "ESPECES";
 		if(newCb == 1) {
 			payment = "CB / VISA";
 		}
 		var newBag = document.getElementById("Logage2").value;
-		var bagYesNo = (newBag) ? 'Oui' : 'Non';
+		var bagYesNo = (newBag==1) ? 'Oui' : 'Non';
 		var newComs = document.getElementById("coms3").value.replace(/'/g, "&rsquo;");
 		var comments1 = '<ul><li>Nom du client : ' + newName + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + newHowMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Type de vehicule : ' + newType + '</li>';
 		if (newComs != '') {
@@ -1671,7 +1676,8 @@
 		let isAddrDest = $("#DestAddress").val();
 		let isAddrPrices = $("#addressInputPrices").val();
 		let isAddrDestPrices = $("#DestAddressPrices").val();
-		if((isAddr!='' && isAddrDest!='') || (isAddrPrices!='' && isAddrDestPrices!='')) {
+		let isPayment = $("#Pay").val();
+		if((isAddr!='' && isAddrDest!='' && isPayment!='') || (isAddrPrices!='' && isAddrDestPrices!='')) {
 			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 			if (zip != '') {
 				$.mobile.pageContainer.pagecontainer("change", pageToGo, { transition: "slide", reverse: true} );
@@ -1691,6 +1697,11 @@
 				$( "#setZip" ).popup( "open", { positionTo: "window" } );
 			}
 			*/
+		}
+		else if (isPayment=='') {
+			if(app) navigator.notification.alert('Veuillez préciser un moyen de paiement SVP...', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Veuillez préciser un moyen de paiement SVP...');
+			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 		}
 		else {
 			if(app) navigator.notification.alert('Veuillez renseigner une adresse de départ (ou attendre la fin de la géolocalisation), ainsi qu\'une adresse de destination SVP...', alertDismissed, 'ChauffeursVTC', 'OK');
@@ -2197,7 +2208,9 @@
 			payment = "Oui";
 		}
 		var bag = document.getElementById("Logage").value;
-		var bagYesNo = (bag) ? 'Oui' : 'Non';
+		var bagYesNo = (bag==1) ? 'Oui' : 'Non';
+		var pet = document.getElementById("Pet").value;
+		var pets = (pet==1) ? 'Oui' : 'Non';
 		var coms = document.getElementById("coms").value.replace(/'/g, "&rsquo;");
 		var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Type de vehicule : ' + typecar + '</li>';
 		if (coms != '') {
@@ -2456,9 +2469,9 @@
 		var cb = document.getElementById("Pay").value;
 		var group = document.getElementById("group").value;
 		var pet = document.getElementById("Pet").value;
-		var pets = (pet) ? 'Oui' : 'Non';
+		var pets = (pet==1) ? 'Oui' : 'Non';
 		var bag = document.getElementById("Logage").value;
-		var bagYesNo = (bag) ? 'Oui' : 'Non';
+		var bagYesNo = (bag==1) ? 'Oui' : 'Non';
 		switch (cb) {
 			case '0':
 				var payment = "Esp&egrave;ces";
@@ -2592,9 +2605,9 @@
 		}
 		var group = document.getElementById("group").value;
 		var pet = document.getElementById("Pet").value;
-		var pets = (pet) ? 'Oui' : 'Non';
+		var pets = (pet==1) ? 'Oui' : 'Non';
 		var bag = document.getElementById("Logage").value;
-		var bagYesNo = (bag) ? 'Oui' : 'Non';
+		var bagYesNo = (bag==1) ? 'Oui' : 'Non';
 		var coms = document.getElementById("coms").value.replace(/'/g, "&rsquo;");
 		var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Animaux : ' + pets + '</li><li>Type de vehicule : ' + typecar + '</li>';
 		if (coms != '') {
@@ -3155,8 +3168,10 @@
                     </td></tr>
                     </tbody>
                 </table>
+				<label for="howMany">Nombre de passagers :</label>
+				<input name="howMany" id="howMany" min="1" max="8" value="1" data-theme="c" data-show-value="true" data-popup-enabled="true" type="range">
 				<select id="Pay"> 
-					<option value="1" selected>CB / Esp&egrave;ces</option>
+					<option value="" selected>Moyen de paiement</option>
 					<option value="0">Esp&egrave;ces</option>
 					<option value="1">CB / VISA</option>
 					<!-- <option value="2">AMEX</option> -->
@@ -3164,8 +3179,6 @@
                 <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
                 <p class="expends"><b>Un besoin particulier ?</b><br><img src="visuels/dots.png" alt="Un besoin particulier ? Ouvrir le formulaire complet" width="100%" style="max-width:1200px;"/></p>
                 <div id="details">
-                    <label for="howMany">Nombre de passagers :</label>
-                    <input name="howMany" id="howMany" min="1" max="8" value="1" data-theme="c" data-show-value="true" data-popup-enabled="true" type="range">
 					<select id="Logage"> 
 						<option value="0" selected>Bagages</option>
 						<option value="1">OUI</option>
@@ -3688,7 +3701,7 @@
 						<option value="Van">Van (8 places max)</option>
                     </select>
                     <select id="Pay2"> 
-                        <option value="1" selected>CB / Esp&egrave;ces</option>
+                        <option value="" selected>Moyen de paiement</option>
                         <option value="0">Esp&egrave;ces</option>
                         <option value="1">CB / VISA</option>
                         <!-- <option value="2">AMEX</option> -->
@@ -3774,7 +3787,7 @@
 						<option value="Van">Van (8 places max)</option>
                     </select>
                     <select id="Pay3"> 
-                        <option value="" selected>CB / Esp&egrave;ces</option>
+                        <option value="" selected>Moyen de paiement</option>
                         <option value="0">Esp&egrave;ces</option>
                         <option value="1">CB / VISA</option>
                         <!-- <option value="2">AMEX</option> -->
