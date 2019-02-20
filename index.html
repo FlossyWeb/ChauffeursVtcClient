@@ -964,26 +964,31 @@
 			var howMany = document.getElementById("howMany").value;
 			var typecar = document.getElementById("CarType").value;
 			var cb = document.getElementById("Pay").value;
+			var bag = document.getElementById("Logage").value;
+			var bagYesNo = (bag) ? 'Oui' : 'Non';
+			var pet = document.getElementById("Pet").value;
+			var pets = (pet) ? 'Oui' : 'Non';
+			var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Animaux : ' + pets + '</li><li>Type de vehicule : ' + typecar + '</li>';
 			var group = document.getElementById("group").value;
 			switch (cb) {
 				case '0':
-					var payment = "Non";
+					var payment = "ESPECES"; // Here "Esp&egrave;ces" would break the url adding a new var &...
 					cb = 0;
 				  break;
 				case '1':
-					var payment = "Oui";
+					var payment = "CB / VISA";
 					cb = 1;
 				  break;
 				case '2':
-					var payment = "Oui (AMEX)";
+					var payment = "AMEX";
 					cb = 1;
 				  break;
 				default:
-					var payment = "Non";
-					cb = 0;
+					var payment = "CB / VISA";
+					cb = 1;
 			}
 			var coms = document.getElementById("coms").value.replace(/'/g, "&rsquo;");
-			var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Type de vehicule : ' + typecar + '</li>';
+			var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Animaux : ' + pets + '</li><li>Type de vehicule : ' + typecar + '</li>';
 			if (coms != '') {
 				var comments2 = '<li>' + coms + '</li></ul>';
 			}
@@ -1125,12 +1130,14 @@
 		var newWhen = $('#date2').val();
 		var newId = $('#modId').val();
 		var newDep = $('#modDep').val();
-		var payment = "Non";
+		var payment = "Esp&egrave;ces";
 		if(newCb == 1) {
-			payment = "Oui";
+			payment = "CB / VISA";
 		}
+		var newBag = document.getElementById("Logage2").value;
+		var bagYesNo = (newBag) ? 'Oui' : 'Non';
 		var newComs = document.getElementById("coms2").value.replace(/'/g, "&rsquo;");
-		var comments1 = '<ul><li>Nom du client : ' + newName + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + newHowMany + '</li><li>Type de vehicule : ' + newType + '</li>';
+		var comments1 = '<ul><li>Nom du client : ' + newName + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + newHowMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Type de vehicule : ' + newType + '</li>';
 		if (newComs != '') {
 			var comments2 = '<li>' + newComs + '</li></ul>';
 		}
@@ -1224,12 +1231,14 @@
 		var newWhen = "";
 		var newId = $('#modId3').val();
 		var newDep = $('#modDep3').val();
-		var payment = "Non";
+		var payment = "Esp&egrave;ces";
 		if(newCb == 1) {
-			payment = "Oui";
+			payment = "CB / VISA";
 		}
+		var newBag = document.getElementById("Logage2").value;
+		var bagYesNo = (newBag) ? 'Oui' : 'Non';
 		var newComs = document.getElementById("coms3").value.replace(/'/g, "&rsquo;");
-		var comments1 = '<ul><li>Nom du client : ' + newName + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + newHowMany + '</li><li>Type de vehicule : ' + newType + '</li>';
+		var comments1 = '<ul><li>Nom du client : ' + newName + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + newHowMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Type de vehicule : ' + newType + '</li>';
 		if (newComs != '') {
 			var comments2 = '<li>' + newComs + '</li></ul>';
 		}
@@ -1510,6 +1519,7 @@
 		return Math.floor(Math.random() * (max - min + 1)) + min;
 	}
 	function locateMe() {
+		if(isAddressTyped) isAddressTyped=false; // Re-enable gps tracking
 		if (navigator.geolocation)
 		{
 			if (navigator.userAgent.toLowerCase().match(/android/)) {
@@ -2186,8 +2196,10 @@
 		if(cb == 1) {
 			payment = "Oui";
 		}
+		var bag = document.getElementById("Logage").value;
+		var bagYesNo = (bag) ? 'Oui' : 'Non';
 		var coms = document.getElementById("coms").value.replace(/'/g, "&rsquo;");
-		var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Type de vehicule : ' + typecar + '</li>';
+		var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Type de vehicule : ' + typecar + '</li>';
 		if (coms != '') {
 			var comments2 = '<li>' + coms + '</li></ul>';
 		}
@@ -2445,25 +2457,27 @@
 		var group = document.getElementById("group").value;
 		var pet = document.getElementById("Pet").value;
 		var pets = (pet) ? 'Oui' : 'Non';
+		var bag = document.getElementById("Logage").value;
+		var bagYesNo = (bag) ? 'Oui' : 'Non';
 		switch (cb) {
 			case '0':
-				var payment = "Non";
+				var payment = "Esp&egrave;ces";
 				cb = 0;
 			  break;
 			case '1':
-				var payment = "Oui";
+				var payment = "CB / VISA";
 				cb = 1;
 			  break;
 			case '2':
-				var payment = "Oui (AMEX)";
+				var payment = "AMEX";
 				cb = 1;
 			  break;
 			default:
-				var payment = "Non";
-				cb = 0;
+				var payment = "CB / VISA";
+				cb = 1;
 		}
 		var coms = document.getElementById("coms").value.replace(/'/g, "&rsquo;");
-		var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Type de vehicule : ' + typecar + '</li><li>Animaux : ' + pets + '</li>';
+		var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Animaux : ' + pets + '</li><li>Type de vehicule : ' + typecar + '</li>';
 		if (coms != '') {
 			var comments2 = '<li>' + coms + '</li></ul>';
 		}
@@ -2561,26 +2575,28 @@
 		var cb = document.getElementById("Pay").value;
 		switch (cb) {
 			case '0':
-				var payment = "Non";
+				var payment = "Esp&egrave;ces";
 				cb = 0;
 			  break;
 			case '1':
-				var payment = "Oui";
+				var payment = "CB / VISA";
 				cb = 1;
 			  break;
 			case '2':
-				var payment = "Oui (AMEX)";
+				var payment = "AMEX";
 				cb = 1;
 			  break;
 			default:
-				var payment = "Non";
-				cb = 0;
+				var payment = "CB / VISA";
+				cb = 1;
 		}
 		var group = document.getElementById("group").value;
 		var pet = document.getElementById("Pet").value;
 		var pets = (pet) ? 'Oui' : 'Non';
+		var bag = document.getElementById("Logage").value;
+		var bagYesNo = (bag) ? 'Oui' : 'Non';
 		var coms = document.getElementById("coms").value.replace(/'/g, "&rsquo;");
-		var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement CB : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Type de vehicule : ' + typecar + '</li>';
+		var comments1 = '<ul><li>Nom du client : ' + room + '</li><li>Paiement : ' + payment + '</li><li>Nombre de passagers : ' + howMany + '</li><li>Bagages : ' + bagYesNo + '</li><li>Animaux : ' + pets + '</li><li>Type de vehicule : ' + typecar + '</li>';
 		if (coms != '') {
 			var comments2 = '<li>' + coms + '</li></ul>';
 		}
@@ -3139,11 +3155,27 @@
                     </td></tr>
                     </tbody>
                 </table>
+				<select id="Pay"> 
+					<option value="1" selected>CB / Esp&egrave;ces</option>
+					<option value="0">Esp&egrave;ces</option>
+					<option value="1">CB / VISA</option>
+					<!-- <option value="2">AMEX</option> -->
+				</select>
                 <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
                 <p class="expends"><b>Un besoin particulier ?</b><br><img src="visuels/dots.png" alt="Un besoin particulier ? Ouvrir le formulaire complet" width="100%" style="max-width:1200px;"/></p>
                 <div id="details">
                     <label for="howMany">Nombre de passagers :</label>
                     <input name="howMany" id="howMany" min="1" max="8" value="1" data-theme="c" data-show-value="true" data-popup-enabled="true" type="range">
+					<select id="Logage"> 
+						<option value="0" selected>Bagages</option>
+						<option value="1">OUI</option>
+						<option value="0">NON</option>
+					</select>
+					<select id="Pet"> 
+						<option value="0" selected>Animaux</option>
+						<option value="1">OUI</option>
+						<option value="0">NON</option>
+					</select>
                     <select id="CarType"> 
                         <option value="Berline" selected>Vehicule</option>
 						<option value="Berline">Berline (4 places max)</option>
@@ -3158,12 +3190,6 @@
                         <option value="1">Oui</option>
                     </select>
                     -->
-                    <select id="Pay"> 
-                        <option value="" selected>CB / Esp&eacute;ces</option>
-                        <option value="0">Esp&eacute;ces</option>
-                        <option value="1">CB</option>
-                        <!-- <option value="2">AMEX</option> -->
-                    </select>
 					<!--
 					<select id="Pmr"> 
 						<option value="" selected>TPMR</option>
@@ -3171,11 +3197,6 @@
 						<option value="">NON</option>
 					</select>
 					-->
-					<select id="Pet"> 
-						<option value="" selected>Animaux</option>
-						<option value="1">OUI</option>
-						<option value="0">NON</option>
-					</select>
                     <p id="datelabel"><b>Date et heure du RDV si r&eacute;servation :</b></p>
                     <span style="display:inline-block;width: 48%;">
                         <input type="date" id="date" placeholder="jj/mm/aaaa" data-inline="true" value=""/>
@@ -3654,6 +3675,11 @@
                 <div id="details">
                     <label for="howMany">Nombre de passagers :</label>
                     <input name="howMany" id="howMany2" min="1" max="8" value="1" data-theme="c" data-show-value="true" data-popup-enabled="true" type="range">
+					<select id="Logage2"> 
+						<option value="0" selected>Bagages</option>
+						<option value="1">OUI</option>
+						<option value="0">NON</option>
+					</select>
                     <select id="CarType2"> 
                         <option value="Berline" selected>Vehicule</option>
 						<option value="Berline">Berline (4 places max)</option>
@@ -3662,9 +3688,9 @@
 						<option value="Van">Van (8 places max)</option>
                     </select>
                     <select id="Pay2"> 
-                        <option value="" selected>CB / Esp&eacute;ces</option>
-                        <option value="0">Esp&eacute;ces</option>
-                        <option value="1">CB</option>
+                        <option value="1" selected>CB / Esp&egrave;ces</option>
+                        <option value="0">Esp&egrave;ces</option>
+                        <option value="1">CB / VISA</option>
                         <!-- <option value="2">AMEX</option> -->
                     </select>
                     <textarea id="coms2" placeholder="Commentaires"></textarea>
@@ -3735,6 +3761,11 @@
                 <div id="details">
                     <label for="howMany">Nombre de passagers :</label>
                     <input name="howMany" id="howMany3" min="1" max="8" value="1" data-theme="c" data-show-value="true" data-popup-enabled="true" type="range">
+					<select id="Logage3"> 
+						<option value="0" selected>Bagages</option>
+						<option value="1">OUI</option>
+						<option value="0">NON</option>
+					</select>
                     <select id="CarType3"> 
                         <option value="Berline" selected>Vehicule</option>
 						<option value="Berline">Berline (4 places max)</option>
@@ -3743,9 +3774,9 @@
 						<option value="Van">Van (8 places max)</option>
                     </select>
                     <select id="Pay3"> 
-                        <option value="" selected>CB / Esp&eacute;ces</option>
-                        <option value="0">Esp&eacute;ces</option>
-                        <option value="1">CB</option>
+                        <option value="" selected>CB / Esp&egrave;ces</option>
+                        <option value="0">Esp&egrave;ces</option>
+                        <option value="1">CB / VISA</option>
                         <!-- <option value="2">AMEX</option> -->
                     </select>
                     <textarea id="coms3" placeholder="Commentaires"></textarea>
