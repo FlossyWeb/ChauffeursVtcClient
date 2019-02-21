@@ -973,15 +973,15 @@
 			switch (cb) {
 				case '0':
 					var payment = "ESPECES"; // Here "Esp&egrave;ces" would break the url adding a new var &...
-					cb = 0;
+					cb = '0';
 				  break;
 				case '1':
 					var payment = "CB / VISA";
-					cb = 1;
+					cb = '1';
 				  break;
 				case '2':
 					var payment = "AMEX";
-					cb = 1;
+					cb = '1';
 				  break;
 				default:
 					var payment = "CB / VISA";
@@ -1038,33 +1038,51 @@
 			url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
 			//alert(url);
 			if(rdvpoint!='' && dest!='' && cb!='') {
-				$.post("https://www.chauffeursvtc.com/appserver/bookings_app_share.php", url, function(data) {
-					if(!data.ok) {
-						//navigator.notification.alert('Vous ne pouvez reserver un taxi que si le RDV est dans plus de 60 minutes !!');
-						//Sending as direct job
-						if(data.past=='PAST') {
-							if(app) navigator.notification.alert('La date du RDV est passée !!', alertDismissed, 'ChauffeursVTC', 'OK');
-							else alert('La date du RDV est passée !!');
-						}
-						else if(data.past=='WEEK') {
-							if(app) navigator.notification.alert('Désolé, vous ne pouvez pas réserver nos prestations plus de 7 jours à l’avance.', alertDismissed, 'ChauffeursVTC', 'OK');
-							else alert('Désolé, vous ne pouvez pas réserver nos prestations plus de 7 jours à l’avance.');
-						}
-						else if(data.past=='NOW') {
-							//checkZip('#map_page_open');
-							checkZip('#map_page');
+				$.get('https://api-adresse.data.gouv.fr/search/', {q: rdvpoint, type: ''}, function(data) {
+				}, "json").done(function(data) { 
+					if(data.features[0].properties.label!='baninfo') {
+						// Geocoding is OK...
+						//insee = data.features[0].properties.citycode;
+						zip = data.features[0].properties.postcode;
+						//dep = zip.substring(0, 2);
+						//$.sessionStorage.setItem('dep', dep);
+						//searchLocationsNearNoMap(data.features[0].geometry.coordinates[1], data.features[0].geometry.coordinates[0]);
+					}
+					/*
+					else {
+						if(app) navigator.notification.alert('Adresse inconnue !!', alertDismissed, 'ChauffeursVTC', 'OK');
+						else alert('Adresse inconnue !!');
+					}
+					*/
+				}).always(function(data) { 
+					$.post("https://www.chauffeursvtc.com/appserver/bookings_app_share.php", url, function(data) {
+						if(!data.ok) {
+							//navigator.notification.alert('Vous ne pouvez reserver un taxi que si le RDV est dans plus de 60 minutes !!');
+							//Sending as direct job
+							if(data.past=='PAST') {
+								if(app) navigator.notification.alert('La date du RDV est passée !!', alertDismissed, 'ChauffeursVTC', 'OK');
+								else alert('La date du RDV est passée !!');
+							}
+							else if(data.past=='WEEK') {
+								if(app) navigator.notification.alert('Désolé, vous ne pouvez pas réserver nos prestations plus de 7 jours à l’avance.', alertDismissed, 'ChauffeursVTC', 'OK');
+								else alert('Désolé, vous ne pouvez pas réserver nos prestations plus de 7 jours à l’avance.');
+							}
+							else if(data.past=='NOW') {
+								//checkZip('#map_page_open');
+								checkZip('#map_page');
+							}
+							else {
+								// data.past=='NOPE' !!
+							}
 						}
 						else {
-							// data.past=='NOPE' !!
+							if(app) navigator.notification.alert('Tarif annoncé : '+data.prix+' €', alertDismissed, 'ChauffeursVTC', 'OK');
+							else alert('Tarif annoncé : '+data.prix+' €');
+							$.mobile.pageContainer.pagecontainer("change", "#book_page", { transition: "slide"} );
 						}
-					}
-					else {
-						if(app) navigator.notification.alert('Tarif annoncé : '+data.prix+' €', alertDismissed, 'ChauffeursVTC', 'OK');
-						else alert('Tarif annoncé : '+data.prix+' €');
-						$.mobile.pageContainer.pagecontainer("change", "#book_page", { transition: "slide"} );
-					}
-				}, "json").always(function () {
-					$('#booking').prop('disabled', false).removeClass('ui-disabled');
+					}, "json").always(function () {
+						$('#booking').prop('disabled', false).removeClass('ui-disabled');
+					});
 				});
 			}
 			else if(cb=='') {
