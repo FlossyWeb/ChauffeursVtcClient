@@ -1033,9 +1033,6 @@
 			url = '';
 			num_req = idcourse;
 			dep = $.sessionStorage.getItem('dep');
-			url = 'taxi=0000&tel=0000000000&idcourse=' + idcourse + '&num_req=' + num_req + '&rdvpoint=' + rdvpoint + '&dest=' + dest + '&lat=' + rdvlat + '&lng=' + rdvlng + '&comments=' + comments + '&cell=' + encodeURIComponent(cell) + '&when=' + when + '&date=' + date + '&operator=' + operator + '&howmany=' + howMany + '&dep=' + dep + '&zip=' + zip+'&group=1&ack=0&db=1';
-			//url = url.replace(/'/g, "&rsquo;"); // if we escape with &rsquo; it will break the url adding a new var &...
-			url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
 			//alert(url);
 			if(rdvpoint!='' && dest!='' && cb!='') {
 				$.get('https://api-adresse.data.gouv.fr/search/', {q: rdvpoint, type: ''}, function(data) {
@@ -1055,6 +1052,9 @@
 					}
 					*/
 				}).always(function(data) { 
+					url = 'taxi=0000&tel=0000000000&idcourse=' + idcourse + '&num_req=' + num_req + '&rdvpoint=' + rdvpoint + '&dest=' + dest + '&lat=' + rdvlat + '&lng=' + rdvlng + '&comments=' + comments + '&cell=' + encodeURIComponent(cell) + '&when=' + when + '&date=' + date + '&operator=' + operator + '&howmany=' + howMany + '&dep=' + dep + '&zip=' + zip+'&group=1&ack=0&db=1';
+					//url = url.replace(/'/g, "&rsquo;"); // if we escape with &rsquo; it will break the url adding a new var &...
+					url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
 					$.post("https://www.chauffeursvtc.com/appserver/bookings_app_share.php", url, function(data) {
 						if(!data.ok) {
 							//navigator.notification.alert('Vous ne pouvez reserver un taxi que si le RDV est dans plus de 60 minutes !!');
