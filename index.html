@@ -1697,7 +1697,7 @@
 		let isPayment = $("#Pay").val();
 		let isWhen = document.getElementById("when").value;
 		let isDate = document.getElementById("date").value;
-		if((isAddr!='' && isAddrDest!='' && isPayment!='') || (isAddrPrices!='' && isAddrDestPrices!='') || (isDate!='' && isWhen=='') || (isDate=='' && isWhen!='')) {
+		if((isAddr!='' && isAddrDest!='' && isPayment!='' && isDate=='' && isWhen=='') || (isAddrPrices!='' && isAddrDestPrices!='')) {
 			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 			if (zip != '') {
 				$.mobile.pageContainer.pagecontainer("change", pageToGo, { transition: "slide", reverse: true} );
