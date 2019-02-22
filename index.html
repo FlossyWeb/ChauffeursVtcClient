@@ -1455,7 +1455,7 @@
 				$("#book-box").hide("fast");
                 $("#next-box").show("medium");
             }
-        }, 1000);
+        }, 500);
 		nom = $.localStorage.getItem('nom');
 		tel = $.localStorage.getItem('tel');
 		$('#Accurate').val(nom);
@@ -1695,7 +1695,9 @@
 		let isAddrPrices = $("#addressInputPrices").val();
 		let isAddrDestPrices = $("#DestAddressPrices").val();
 		let isPayment = $("#Pay").val();
-		if((isAddr!='' && isAddrDest!='' && isPayment!='') || (isAddrPrices!='' && isAddrDestPrices!='')) {
+		let isWhen = document.getElementById("when").value;
+		let isDate = document.getElementById("date").value;
+		if((isAddr!='' && isAddrDest!='' && isPayment!='') || (isAddrPrices!='' && isAddrDestPrices!='') || (isDate!='' && isWhen=='') || (isDate=='' && isWhen!='')) {
 			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 			if (zip != '') {
 				$.mobile.pageContainer.pagecontainer("change", pageToGo, { transition: "slide", reverse: true} );
@@ -1719,6 +1721,16 @@
 		else if (isPayment=='') {
 			if(app) navigator.notification.alert('Veuillez préciser un moyen de paiement SVP...', alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert('Veuillez préciser un moyen de paiement SVP...');
+			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
+		}
+		else if (isDate!='' && isWhen=='') {
+			if(app) navigator.notification.alert('Vous avez spécifié une date de RDV, si vous souhaitez réserver, veuillez préciser un horaire, sinon effacer la date !', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Vous avez spécifié une date de RDV, si vous souhaitez réserver, veuillez préciser un horaire, sinon effacer la date !');
+			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
+		}
+		else if (isDate=='' && isWhen!='') {
+			if(app) navigator.notification.alert('Vous avez spécifié une heure de RDV, si vous souhaitez réserver, veuillez préciser une date, sinon effacer l\'heure !', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Vous avez spécifié une heure de RDV, si vous souhaitez réserver, veuillez préciser une date, sinon effacer l\'heure !');
 			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 		}
 		else {
@@ -3190,8 +3202,8 @@
 				<input name="howMany" id="howMany" min="1" max="8" value="1" data-theme="c" data-show-value="true" data-popup-enabled="true" type="range">
 				<select id="Pay"> 
 					<option value="" selected>Moyen de paiement</option>
-					<option value="0">Esp&egrave;ces</option>
 					<option value="1">CB / VISA</option>
+					<option value="0">Esp&egrave;ces</option>
 					<!-- <option value="2">AMEX</option> -->
 				</select>
                 <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
@@ -3720,8 +3732,8 @@
                     </select>
                     <select id="Pay2"> 
                         <option value="" selected>Moyen de paiement</option>
-                        <option value="0">Esp&egrave;ces</option>
                         <option value="1">CB / VISA</option>
+                        <option value="0">Esp&egrave;ces</option>
                         <!-- <option value="2">AMEX</option> -->
                     </select>
                     <textarea id="coms2" placeholder="Commentaires"></textarea>
@@ -3806,8 +3818,8 @@
                     </select>
                     <select id="Pay3"> 
                         <option value="" selected>Moyen de paiement</option>
-                        <option value="0">Esp&egrave;ces</option>
                         <option value="1">CB / VISA</option>
+                        <option value="0">Esp&egrave;ces</option>
                         <!-- <option value="2">AMEX</option> -->
                     </select>
                     <textarea id="coms3" placeholder="Commentaires"></textarea>
