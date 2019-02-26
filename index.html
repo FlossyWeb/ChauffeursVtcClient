@@ -448,14 +448,46 @@
 				  " NON SUPPORTE. Valeur du scan: " + result.text);
 		}
 	}
+	function displayScannedContents(err, text){
+		if(err){
+			// an error occurred, or the scan was canceled (error code `6`)
+			navigator.notification.alert("Erreur: " + err + ". Valeur du scan: " + text)
+		}
+		else {
+			if (text.indexOf("http") === 0) {
+				setTimeout(function() { 
+					//window.plugins.childBrowser.showWebPage(result.text, { showLocationBar: true }); 
+					window.open(result.text,'_blank','location=yes,enableViewportScale=yes,closebuttoncaption=Fermer');
+				}, 500);
+			} else {
+				navigator.notification.alert(
+						text,
+						function (){},
+						'Scan Value:',
+						'Done'
+					);
+			}
+		}
+	}
 	function goScan ()
 	{
+		// Start a scan. Scanning will continue until something is detected or
+		// `QRScanner.cancelScan()` is called.
+		QRScanner.scan(displayScannedContents);
+		 
+		 
+		// Make the webview transparent so the video preview is visible behind it.
+		QRScanner.show();
+		// Be sure to make any opaque HTML elements transparent here to avoid
+		// covering the video.
+		/*
 		cordova.plugins.barcodeScanner.scan(
 			scanSuccess, 
 			function (error) {
 				navigator.notification.alert("Scan Erreur: " + error);
 			}
 		);
+		*/
 	}
 	function successOpenPdf() {
 	  console.log('Success');
