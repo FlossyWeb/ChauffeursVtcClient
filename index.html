@@ -1724,12 +1724,13 @@
 		dep = $.sessionStorage.getItem('dep');
 		let isAddr = $("#addressInput").val();
 		let isAddrDest = $("#DestAddress").val();
-		let isAddrPrices = $("#addressInputPrices").val();
-		let isAddrDestPrices = $("#DestAddressPrices").val();
+		//let isAddrPrices = $("#addressInputPrices").val();
+		//let isAddrDestPrices = $("#DestAddressPrices").val();
 		let isPayment = $("#Pay").val();
 		let isWhen = document.getElementById("when").value;
 		let isDate = document.getElementById("date").value;
-		if((isAddr!='' && isAddrDest!='' && isPayment!='' && isDate=='' && isWhen=='') || (isAddrPrices!='' && isAddrDestPrices!='')) {
+		//if((isAddr!='' && isAddrDest!='' && isPayment!='' && isDate=='' && isWhen=='') || (isAddrPrices!='' && isAddrDestPrices!='')) {
+		if(isAddr!='' && isAddrDest!='' && isPayment!='' && isDate=='' && isWhen=='') {
 			$('#search').prop('disabled', false).removeClass('ui-disabled'); // Button is back
 			if (zip != '') {
 				$.mobile.pageContainer.pagecontainer("change", pageToGo, { transition: "slide", reverse: true} );
