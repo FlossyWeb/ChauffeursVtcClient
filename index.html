@@ -3050,7 +3050,7 @@
 	{
 		var rdvPrices = $('#addressInputPrices').val();
 		var destPrices = $('#DestAddressPrices').val();
-		$('#addressInput').val(rdvPrices); // regarding the command button.
+		//$('#addressInput').val(rdvPrices); // regarding the command button.
 		var rdvPricesLng;
 		var rdvPricesLat;
 		var destPricesLng;
@@ -3073,8 +3073,8 @@
 					var devUrl = 'lat=' + rdvPricesLat + '&lng=' + rdvPricesLng + '&lat2=' + destPricesLat + '&lng2=' + destPricesLng + '&rdv=' + rdvPrices + '&dest=' + destPrices + '&dep=' + depPrices+ '&app=1';
 					//alert(devUrl);
 					$.post("https://www.chauffeursvtc.com/appserver/calcdev.php", devUrl, function(data) { 
-						//$('#pricesCont').empty().append(data+'<button onClick="checkZip(\'#map_page_open\')" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-action" id="search">Commander maintenant</button>');
-						$('#pricesCont').empty().append(data+'<button onClick="checkZip(\'#map_page\')" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-action" id="search">Commander maintenant</button>');
+						//$('#pricesCont').empty().append(data+'<button onClick="checkZip(\'#map_page\')" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-action" id="search">Commander maintenant</button>');
+						$('#pricesCont').empty().append(data+'<button onClick="pricesFill()" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-action" id="search">Continuer</button>');
 						//$('#pricesPopCont').empty().append(data);
 						//$( "#pricesPop" ).popup( "open", { positionTo: "window" } );
 					});
@@ -3085,6 +3085,14 @@
 			if(app) navigator.notification.alert("Vous devez rensigner les adresses de départ et d'arrivée.", alertDismissed, 'ChauffeursVTC', 'OK');
 			else alert("Vous devez rensigner les adresses de départ et d'arrivée.");
 		}
+	}
+	function pricesFill()
+	{
+		let rdvPrices = $('#addressInputPrices').val();
+		let destPrices = $('#DestAddressPrices').val();
+		$('#addressInput').val(rdvPrices); 
+		$('#DestAddress').val(destPrices);
+		$.mobile.pageContainer.pagecontainer("change", "#infos", { transition: "slide", reverse: true} );
 	}
     function refreshApp()
     {
