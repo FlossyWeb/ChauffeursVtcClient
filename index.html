@@ -47,7 +47,7 @@
     </script>
     <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
     <script src="phonegap.js"></script>
-    <script src="barcodescanner.js"></script>
+    <!-- <script src="barcodescanner.js"></script> -->
     <!-- <script src="sms.js"></script> -->
     <!-- <script src="PowerManagement.js"></script> -->
     <script src="cdv-plugin-fb-connect.js"></script>
@@ -473,21 +473,21 @@
 	{
 		// Start a scan. Scanning will continue until something is detected or
 		// `QRScanner.cancelScan()` is called.
-		QRScanner.scan(displayScannedContents);
+		//QRScanner.scan(displayScannedContents);
 		 
 		 
 		// Make the webview transparent so the video preview is visible behind it.
-		QRScanner.show();
+		//QRScanner.show();
 		// Be sure to make any opaque HTML elements transparent here to avoid
 		// covering the video.
-		/*
+		
 		cordova.plugins.barcodeScanner.scan(
 			scanSuccess, 
 			function (error) {
 				navigator.notification.alert("Scan Erreur: " + error);
 			}
 		);
-		*/
+		
 	}
 	function successOpenPdf() {
 	  console.log('Success');
@@ -3177,7 +3177,7 @@
 		  <li><a href="#" onclick="window.plugins.socialsharing.share('Téléchargez ChauffeursVTC sur chauffeursvtc.com', null, 'https://www.chauffeursvtc.com/icon_300.png', 'https://www.chauffeursvtc.com/stores.php?app=cvclient')" class="ui-btn ui-btn-icon-left ui-icon-mail noAppHide"><b>Partager l&rsquo;app</b></a></li>
 		   -->
  		  <li><a href="#" onclick="window.plugins.socialsharing.share('Téléchargez ChauffeursVTC sur chauffeursvtc.com', null, null, 'https://www.chauffeursvtc.com/stores.php?app=cvclient')" class="ui-btn ui-btn-icon-left ui-icon-mail noAppHide"><b>Partager l&rsquo;app</b></a></li>
-         <li><a href="#" onClick="goScan()" data-transition="slide" class="ui-btn ui-btn-icon-left ui-icon-camera noAppHide"><b>Scanner un code</b></a></li>
+         <!-- <li><a href="#" onClick="goScan()" data-transition="slide" class="ui-btn ui-btn-icon-left ui-icon-camera noAppHide"><b>Scanner un code</b></a></li> -->
         </ul>
         <button class="ui-btn ui-corner-all ui-shadow ui-btn-b ui-btn-icon-left ui-icon-power" onClick="dc()">D&eacute;connexion</button>
 		<div id="getBackDriver"></div>
