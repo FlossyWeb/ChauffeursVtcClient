@@ -2188,14 +2188,14 @@
 					else alert('ADRESSE RDV : '+address+' NON TROUVEE ');
 				}
 			});
-			//$.post('https://www.chauffeursvtc.com/appserver/follow.php', { taxi: ftaxi, idcourse: fidcourse, dep: fdep, tel: ftel, table: ftable }, function(data){
 			$.post('https://www.chauffeursvtc.com/appserver/follow.php', { taxi: ftaxi, idcourse: fidcourse, dep: fdep, tel: ftel, table: ftable }, function(data){
 				if(data.ok) {
 					var latlng = new google.maps.LatLng(data.lat, data.lng);
 					var display_name = 'VTC ' + data.name;
 					var cabIcon = 'visuels/taxi_loc_icon.png';
 					self.addMarker({ id: 'cab', 'position': latlng, 'bounds': true, 'icon': cabIcon }).click(function() {
-						infoCont = '<p style="color:#333;"><b>Votre VTC joignable au: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p>';
+						infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+data.name+'</li><li>Type : '+data.type+'</li><li>Marque : '+data.constructor+'</li><li>Mod&egrave;le : '+data.model+'</li><li>Couleur : '+data.color+'</li><li>Imatriculation : '+data.imat+'</li></b></ul><p style="color:#333;"><b>Tel: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p></div>';
+						//infoCont = '<p style="color:#333;"><b>Votre VTC joignable au: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p>';
 						self.openInfoWindow({ 'content':  infoCont}, this);
 					});
 				}
@@ -2210,7 +2210,6 @@
 				navigator.notification.alert('Erreur inconnue, le serveur ou la connexion internet sont indisponibles. ' + textStatus+', '+ errorThrown, alertDismissed, 'ChauffeursVTC Erreur', 'OK');
 			});
 			track = setInterval( function () {
-				//$.post('https://www.chauffeursvtc.com/appserver/follow.php', { taxi: ftaxi, idcourse: fidcourse, dep: fdep, tel: ftel, table: ftable }, function(data){
 				$.post('https://www.chauffeursvtc.com/appserver/follow.php', { taxi: ftaxi, idcourse: fidcourse, dep: fdep, tel: ftel, table: ftable }, function(data){
 					if(data.ok) {
 						markerCab = self.get('markers')['cab'];
@@ -2219,7 +2218,8 @@
 						var display_name = 'VTC ' + data.name;
 						var cabIcon = 'visuels/taxi_loc_icon.png';
 						self.addMarker({ id: 'cab', 'position': latlng, 'bounds': true, 'icon': cabIcon }).click(function() {
-							infoCont = '<p style="color:#333;"><b>Votre VTC joignable au: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p>';
+							infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+data.name+'</li><li>Type : '+data.type+'</li><li>Marque : '+data.constructor+'</li><li>Mod&egrave;le : '+data.model+'</li><li>Couleur : '+data.color+'</li><li>Imatriculation : '+data.imat+'</li></b></ul><p style="color:#333;"><b>Tel: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p></div>';
+							//infoCont = '<p style="color:#333;"><b>Votre VTC joignable au: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p>';
 							self.openInfoWindow({ 'content':  infoCont}, this);
 						});
 						var markerYou = self.get('markers')['you'];
@@ -2747,8 +2747,8 @@
 				url = url.replace(/'/g, "&rsquo;");
 				url = url.replace(/(?:\r\n|\r|\n)/g, '<br/>'); // Replaces line breaks by <br/>
 				var mymarker = mapEvent.addMarker({ id: i ,'position': latlng, 'bounds': true, 'title': name, 'icon': cabIcon }).click(function() {
-					//infoCont = '<div id="infoCont"><p style="color:#333;"><b>' + name + ' est &agrave; ' + parseFloat(distance).toFixed(1) + ' Km de vous.<br>' + address+ '</b></p></div>';
-					infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+name+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>tel : '+address+'</li><li>Prix : '+realcost+'&euro;</li><li>Marque : '+constructor+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Imatriculation : '+imat+'</li><li>Places : '+passengers+'</li></b></ul></div>';
+					//infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+name+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>tel : '+address+'</li><li>Prix : '+realcost+'&euro;</li><li>Marque : '+constructor+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Imatriculation : '+imat+'</li><li>Places : '+passengers+'</li></b></ul></div>';
+					infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+name+'</li><li>Distance : '+parseFloat(distance).toFixed(1) + ' Km de vous</li><li>tel : '+address+'</li><li>Prix : '+realcost+'&euro;</li><li>Marque : '+constructor+'</li><li>Mod&egrave;le : '+model+'</li><li>Couleur : '+color+'</li><li>Imatriculation : '+imat+'</li></b></ul></div>';
 					//callBtn='<button class="ui-btn ui-corner-all ui-shadow ui-btn-c ui-btn-icon-left ui-icon-check cabs" id="' + i + '" onClick="sendJobOpen(\''+ url +'\')">Choisir</button>';
 					//mapEvent.openInfoWindow({ 'content':  infoCont+callBtn}, this);
 					mapEvent.openInfoWindow({ 'content':  infoCont}, this);
