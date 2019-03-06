@@ -2194,7 +2194,7 @@
 					var display_name = 'VTC ' + data.name;
 					var cabIcon = 'visuels/taxi_loc_icon.png';
 					self.addMarker({ id: 'cab', 'position': latlng, 'bounds': true, 'icon': cabIcon }).click(function() {
-						infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+data.name+'</li><li>Type : '+data.type+'</li><li>Marque : '+data.constructor+'</li><li>Mod&egrave;le : '+data.model+'</li><li>Couleur : '+data.color+'</li><li>Imatriculation : '+data.imat+'</li></b></ul><p style="color:#333;"><b>Tel: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p></div>';
+						infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+data.name+'</li><li>Type : '+data.type+'</li><li>Marque : '+data.constructor+'</li><li>Mod&egrave;le : '+data.model+'</li><li>Couleur : '+data.color+'</li><li>Imatriculation : '+data.imat+'</li></b></ul><p style="color:#333;"><b><a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p></div>';
 						//infoCont = '<p style="color:#333;"><b>Votre VTC joignable au: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p>';
 						self.openInfoWindow({ 'content':  infoCont}, this);
 					});
@@ -2218,7 +2218,7 @@
 						var display_name = 'VTC ' + data.name;
 						var cabIcon = 'visuels/taxi_loc_icon.png';
 						self.addMarker({ id: 'cab', 'position': latlng, 'bounds': true, 'icon': cabIcon }).click(function() {
-							infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+data.name+'</li><li>Type : '+data.type+'</li><li>Marque : '+data.constructor+'</li><li>Mod&egrave;le : '+data.model+'</li><li>Couleur : '+data.color+'</li><li>Imatriculation : '+data.imat+'</li></b></ul><p style="color:#333;"><b>Tel: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p></div>';
+							infoCont = '<div id="infoCont"><ul style="color:#333;"><b><li>VTC Num&eacute;ro : '+data.name+'</li><li>Type : '+data.type+'</li><li>Marque : '+data.constructor+'</li><li>Mod&egrave;le : '+data.model+'</li><li>Couleur : '+data.color+'</li><li>Imatriculation : '+data.imat+'</li></b></ul><p style="color:#333;"><b><a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p></div>';
 							//infoCont = '<p style="color:#333;"><b>Votre VTC joignable au: <a data-ajax="false" href="tel:' + data.address + '" class="ui-btn ui-btn-c ui-corner-all ui-shadow ui-icon-phone ui-btn-icon-left">' + data.address + '</a><span style="font-size: x-small;">(aclualis&eacute; &agrave; ' + data.timestamp+ ')</span></b></p>';
 							self.openInfoWindow({ 'content':  infoCont}, this);
 						});
