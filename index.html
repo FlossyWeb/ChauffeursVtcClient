@@ -218,7 +218,7 @@
 							// Reverse geocoding is OK...
 							if(!isAddressTyped) $('#addressInput').val(data.features[0].properties.label);
 							//$('#addressInput2').val(data.features[0].properties.label);
-							//$('#addressInput3').val(data.features[0].properties.label);
+							$('#addressInput3').val(data.features[0].properties.label);
 							if(!isAddressPricesTyped) $('#addressInputPrices').val(data.features[0].properties.label);
 							//insee = data.features[0].properties.citycode;
 							zip = data.features[0].properties.postcode;
@@ -1600,7 +1600,7 @@
 				// Reverse geocoding is OK...
 				$('#addressInput').val(data.features[0].properties.label);
 				//$('#addressInput2').val(data.features[0].properties.label);
-				//$('#addressInput3').val(data.features[0].properties.label);
+				$('#addressInput3').val(data.features[0].properties.label);
 				$('#addressInputPrices').val(data.features[0].properties.label);
 				insee = data.features[0].properties.citycode;
 				zip = data.features[0].properties.postcode;
@@ -1644,7 +1644,7 @@
 				if (results[0]) {
 					$('#addressInput').val(results[0].formatted_address);
 					//$('#addressInput2').val(results[0].formatted_address);
-					//$('#addressInput3').val(results[0].formatted_address);
+					$('#addressInput3').val(results[0].formatted_address);
 					$('#addressInputPrices').val(results[0].formatted_address);
 					for(var i=0; i < results[0].address_components.length; i++)
 					{
@@ -3881,7 +3881,7 @@
                 <input type="hidden" id="modId3" size="20" value=""/>
                 <input type="hidden" id="modDep3" size="2" value=""/>
 				<div id="resmodrink"></div>
-                <button onClick="drinkingMod()" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" id="drinkingMod">Modifier la r&eacute;servation</button>
+                <button onClick="drinkingMod()" class="ui-btn ui-btn-c ui-shadow ui-corner-all ui-btn-icon-left ui-icon-clock" id="drinkingMod">Modifier la course</button>
             </div>
             </center>
         </div>
