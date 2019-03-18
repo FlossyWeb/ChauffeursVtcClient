@@ -641,59 +641,65 @@
 		tel = $('#subTel').val();
 		email = $('#subMail').val();
 		$("#subReturns").empty();
-		$.post("https://www.chauffeursvtc.com/taxioffsrv/register_app.php", { nom: nom, tel: tel, email: email}, function(data) {
-			$.localStorage.setItem('nom', data.nom);
-			$.localStorage.setItem('email', data.email);
-			$.localStorage.setItem('tel', data.tel);
-			$.localStorage.setItem('operator', data.operator);
-			// Refresh Script Vars
-			nom = data.nom;
-			tel = data.tel;
-			email = data.email;
-			operator = data.operator;
-			if (data.subscribed === true)
-			{
-				//navigator.notification.alert(data.subscribed+' '+data.telexist+' '+data.telvalid+' '+data.emailvalid);
-				//$.localStorage.setItem('registeredUser', 'OK');
-				if ($.localStorage.getItem('firstConnexionVar') != 'NO') $.localStorage.setItem('firstConnexionVar', 'YES');
-				$('#Accurate').val(data.nom);
-				$('#cellular').val(data.tel);
-				$('#login').val(data.tel);
-				if(data.sms=='1') {
-					/*
-					if(app) navigator.notification.alert('Afin de vérifier votre numéro de mobile vous allez recevoir vos identifiants par sms, nous vous remercions pour votre inscription.', alertDismissed, 'ChauffeursVTC', 'OK');
-					else alert('Afin de vérifier votre numéro de mobile vous allez recevoir vos identifiants par sms, nous vous remercions pour votre inscription.');
-					*/
-					if(app) navigator.notification.alert('Afin de vérifier votre compte vous allez recevoir vos identifiants par mail, nous vous remercions pour votre inscription.', alertDismissed, 'ChauffeursVTC', 'OK');
-					else alert('Afin de vérifier votre compte vous allez recevoir vos identifiants par mail, nous vous remercions pour votre inscription.');					
+		if(nom!='') {
+			$.post("https://www.chauffeursvtc.com/taxioffsrv/register_app.php", { nom: nom, tel: tel, email: email}, function(data) {
+				$.localStorage.setItem('nom', data.nom);
+				$.localStorage.setItem('email', data.email);
+				$.localStorage.setItem('tel', data.tel);
+				$.localStorage.setItem('operator', data.operator);
+				// Refresh Script Vars
+				nom = data.nom;
+				tel = data.tel;
+				email = data.email;
+				operator = data.operator;
+				if (data.subscribed === true)
+				{
+					//navigator.notification.alert(data.subscribed+' '+data.telexist+' '+data.telvalid+' '+data.emailvalid);
+					//$.localStorage.setItem('registeredUser', 'OK');
+					if ($.localStorage.getItem('firstConnexionVar') != 'NO') $.localStorage.setItem('firstConnexionVar', 'YES');
+					$('#Accurate').val(data.nom);
+					$('#cellular').val(data.tel);
+					$('#login').val(data.tel);
+					if(data.sms=='1') {
+						/*
+						if(app) navigator.notification.alert('Afin de vérifier votre numéro de mobile vous allez recevoir vos identifiants par sms, nous vous remercions pour votre inscription.', alertDismissed, 'ChauffeursVTC', 'OK');
+						else alert('Afin de vérifier votre numéro de mobile vous allez recevoir vos identifiants par sms, nous vous remercions pour votre inscription.');
+						*/
+						if(app) navigator.notification.alert('Afin de vérifier votre compte vous allez recevoir vos identifiants par mail, nous vous remercions pour votre inscription.', alertDismissed, 'ChauffeursVTC', 'OK');
+						else alert('Afin de vérifier votre compte vous allez recevoir vos identifiants par mail, nous vous remercions pour votre inscription.');					
+					}
+					else {
+						if(app) navigator.notification.alert("Pour une raison technique ou parce que votre numéro de téléphone a généré trop d'envois de sms, nous ne pouvons valider votre compte. Veuillez nous contacter via contact@chauffeursvtc.com", alertDismissed, 'ChauffeursVTC', 'OK');
+						else alert("Pour une raison technique ou parce que votre numéro de téléphone a généré trop d'envois de sms, nous ne pouvons valider votre compte. Veuillez nous contacter via contact@chauffeursvtc.com");
+					}
+					$.mobile.pageContainer.pagecontainer("change", "#connect", { transition: "slide"} );
+					//display = '<p><b>' + data.civil + ' ' + data.nom + ' ' + data.prenom + ' Voici les informations d&rsquo;identification qui vous permettront d&rsquo;acc&egrave;der &agrave; votre compte :<br><span style="color:#09F;">Identifiant = ' + data.tel + '<br>Mot de passe = ' + data.pwd + '</span><br>Vous les recevrez dans quelques instants &agrave; cet email : <span style="color:#09F;">' + data.email + '</span>, merci.<br></b></p>';
 				}
 				else {
-					if(app) navigator.notification.alert("Pour une raison technique ou parce que votre numéro de téléphone a généré trop d'envois de sms, nous ne pouvons valider votre compte. Veuillez nous contacter via contact@chauffeursvtc.com", alertDismissed, 'ChauffeursVTC', 'OK');
-					else alert("Pour une raison technique ou parce que votre numéro de téléphone a généré trop d'envois de sms, nous ne pouvons valider votre compte. Veuillez nous contacter via contact@chauffeursvtc.com");
+					display = '<p><b>Vous n&rsquo;avez pas correctement rempli le formulaire d&rsquo;inscription. Nous vous prions de modifier les informations suivantes.</b></p><br>';
+					
+					if (data.telexist === true)
+					{
+						display += '<p style="color:red;"><b>Le num&eacute;ro de t&eacute;l&eacute;phone fourni est d&eacute;j&agrave; associ&eacute; &agrave; un compte.</b></p>';
+					}
+					if (data.telvalid === false)
+					{
+						display += '<p style="color:red;"><b>Le num&eacute;ro de t&eacute;l&eacute;phone fourni n&rsquo;est pas valide: 0000000000 (sans espaces).</b></p>';
+					}
+					if (data.emailvalid === false)
+					{
+						display += '<p style="color:red;"><b>L&rsquo;email fourni n&rsquo;est pas valide.</b></p>';
+					}
 				}
-				$.mobile.pageContainer.pagecontainer("change", "#connect", { transition: "slide"} );
-				//display = '<p><b>' + data.civil + ' ' + data.nom + ' ' + data.prenom + ' Voici les informations d&rsquo;identification qui vous permettront d&rsquo;acc&egrave;der &agrave; votre compte :<br><span style="color:#09F;">Identifiant = ' + data.tel + '<br>Mot de passe = ' + data.pwd + '</span><br>Vous les recevrez dans quelques instants &agrave; cet email : <span style="color:#09F;">' + data.email + '</span>, merci.<br></b></p>';
-			}
-			else {
-				display = '<p><b>Vous n&rsquo;avez pas correctement rempli le formulaire d&rsquo;inscription. Nous vous prions de modifier les informations suivantes.</b></p><br>';
-				
-				if (data.telexist === true)
-				{
-					display += '<p style="color:red;"><b>Le num&eacute;ro de t&eacute;l&eacute;phone fourni est d&eacute;j&agrave; associ&eacute; &agrave; un compte.</b></p>';
-				}
-				if (data.telvalid === false)
-				{
-					display += '<p style="color:red;"><b>Le num&eacute;ro de t&eacute;l&eacute;phone fourni n&rsquo;est pas valide: 0000000000 (sans espaces).</b></p>';
-				}
-				if (data.emailvalid === false)
-				{
-					display += '<p style="color:red;"><b>L&rsquo;email fourni n&rsquo;est pas valide.</b></p>';
-				}
-			}
-			$("#subReturns").empty().append(display);
-		}, "json").always(function(data) {
-			$.mobile.loading( "hide" );
-		});
+				$("#subReturns").empty().append(display);
+			}, "json").always(function(data) {
+				$.mobile.loading( "hide" );
+			});
+		}
+		else {
+			if(app) navigator.notification.alert('Vous devez saisir un nom !', alertDismissed, 'ChauffeursVTC', 'OK');
+			else alert('Vous devez saisir un nom !');					
+		}
 	}
 	function accountMod() {
 		$.mobile.loading( "show" );
@@ -3224,19 +3230,28 @@
 						<!-- <img src="visuels/ico_geolocalisation.png" alt="Affiner ma position GPS" id="locateMeBtn" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/> -->
 						&nbsp;
                     </td></tr>
-                	<tr><td>
-                        <input type="text" id="Accurate" data-clear-btn="true" class="mustHave" size="32" placeholder="* Nom" title="Nom prénom, champs obligatoire" style="min-height:3em;"/>
-                    </td><td align="center">
-						<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" alt="Chercher un ami dans mon carnet d'adresse et commander pour lui" style="max-width:45px;"/>
-                        <!-- <button onClick="getContact()" class="ui-btn ui-btn-c ui-icon-edit ui-shadow-icon ui-btn-icon-notext ui-corner-all"></button> -->
-                    </td></tr>
-                	<tr><td>
-                        <input type="tel" id="cellular" data-clear-btn="true" class="mustHave" size="20" placeholder="* Tel" title="Téléphone, champs obligatoire" style="min-height:3em;"/>
-                    </td><td align="center">
-                        <a href="#rememberMe" data-rel="popup" data-position-to="window" title="Dernières informations saisies">
-							<img src="visuels/ico_favori.png" width="100%" class="cursor" style="max-width:50px;"/>
-						</a>
-                    </td></tr>
+                	<tr>
+						<td colspan="2">
+							<input type="text" id="Accurate" data-clear-btn="true" class="mustHave" size="32" placeholder="* Nom" title="Nom prénom, champs obligatoire" style="min-height:3em;" disabled />
+						</td>
+						<!--
+						<td align="center">
+							<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" alt="Chercher un ami dans mon carnet d'adresse et commander pour lui" style="max-width:45px;"/>
+						</td>
+						-->
+					</tr>
+                	<tr>
+						<td colspan="2">
+							<input type="tel" id="cellular" data-clear-btn="true" class="mustHave" size="20" placeholder="* Tel" title="Téléphone, champs obligatoire" style="min-height:3em;" disabled />
+						</td>
+						<!--
+						<td align="center">
+							<a href="#rememberMe" data-rel="popup" data-position-to="window" title="Dernières informations saisies">
+								<img src="visuels/ico_favori.png" width="100%" class="cursor" style="max-width:50px;"/>
+							</a>
+						</td>
+						-->
+					</tr>
                     </tbody>
                 </table>
 				<label for="howMany">Nombre de passagers :</label>
@@ -3741,20 +3756,32 @@
                     </td><td align="center">
 						<img src="visuels/ico_geolocalisation.png" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/>
                     </td></tr>
-                	<tr><td>
-						<input type="text" id="DestAddress2" data-clear-btn="true" size="40" placeholder="Adresse Destination" width="90%" style="min-height:3em;" size="10"/>
-                    </td><td align="center">
-						<!-- <img src="visuels/ico_geolocalisation.png" alt="Affiner ma position GPS" id="locateMeBtn" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/> -->
-						&nbsp;
-                    </td></tr>
-                	<tr><td>
-                        <input type="text" id="Accurate2" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *" style="min-height:3em;"/>
-                    </td><td align="center">
-						<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" style="max-width:45px;"/>
-                    </td></tr>
-                	<tr><td>
-                        <input type="tel" id="cellular2" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *" style="min-height:3em;"/>
-                    </tbody>
+                	<tr>
+						<td colspan="2">
+							<input type="text" id="DestAddress2" data-clear-btn="true" size="40" placeholder="Adresse Destination" width="90%" style="min-height:3em;" size="10"/>
+						</td>
+						<!--
+						<td align="center">
+							&nbsp;
+						</td>
+						-->
+					</tr>
+                	<tr>
+						<td colspan="2">
+							<input type="text" id="Accurate2" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *" style="min-height:3em;" disabled />
+						</td>
+						<!--
+						<td align="center">
+							<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" style="max-width:45px;"/>
+						</td>
+						-->
+					</tr>
+                	<tr>
+						<td colspan="2">
+							<input type="tel" id="cellular2" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *" style="min-height:3em;" disabled />
+ 						</td>
+					</tr>
+                   </tbody>
                 </table>
                 <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
                 <p class="expends2"><b>D&eacute;tails</b><br><img src="visuels/dots.png" width="100%" style="max-width:1200px;"/></p>
@@ -3827,19 +3854,31 @@
                     </td><td align="center">
 						<img src="visuels/ico_geolocalisation.png" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/>
                     </td></tr>
-                	<tr><td>
-						<input type="text" id="DestAddress3" data-clear-btn="true" size="40" placeholder="Adresse Destination" width="90%" style="min-height:3em;" size="10"/>
-                    </td><td align="center">
-						<!-- <img src="visuels/ico_geolocalisation.png" alt="Affiner ma position GPS" id="locateMeBtn" width="100%" class="cursor" onClick="locateMe()" style="max-width:40px;"/> -->
-						&nbsp;
-                    </td></tr>
-                	<tr><td>
-                        <input type="text" id="Accurate3" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *" style="min-height:3em;"/>
-                    </td><td align="center">
-						<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" style="max-width:45px;"/>
-                    </td></tr>
-                	<tr><td>
-                        <input type="tel" id="cellular3" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *" style="min-height:3em;"/>
+                	<tr>
+						<td colspan="2">
+							<input type="text" id="DestAddress3" data-clear-btn="true" size="40" placeholder="Adresse Destination" width="90%" style="min-height:3em;" size="10"/>
+						</td>
+						<!--
+						<td align="center">
+							&nbsp;
+						</td>
+						-->
+					</tr>
+                	<tr>
+						<td colspan="2">
+							<input type="text" id="Accurate3" data-clear-btn="true" class="mustHave" size="32" placeholder="Nom *" style="min-height:3em;" disabled />
+						</td>
+						<!--
+						<td align="center">
+							<img src="visuels/ico_modif.png" width="100%" class="cursor" onClick="getContact()" style="max-width:45px;"/>
+						</td>
+						-->
+					</tr>
+                	<tr>
+						<td colspan="2">
+							<input type="tel" id="cellular3" data-clear-btn="true" class="mustHave" size="20" placeholder="Tel *" style="min-height:3em;" disabled />
+						</td>
+					</tr>
                     </tbody>
                 </table>
                 <!-- <p style="font-size:small;"><em>*</em> Ces informations sont obligatoires</p> -->
