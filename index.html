@@ -2785,7 +2785,8 @@
 			if(!cabAvail) {
 				if(app) navigator.notification.alert('Nous n\'avons pas trouvé de VTC pour cette demande, il semblerait qu\'aucun vehicule correspondant à ces critères ne se trouve dans cette zone, désolé.', alertDismissed, 'ChauffeursVTC', 'OK');
 				else alert('Nous n\'avons pas trouvé de VTC pour cette demande, il semblerait qu\'aucun vehicule correspondant à ces critères ne se trouve dans cette zone, désolé.');
-				$.mobile.pageContainer.pagecontainer("change", "#infos", { transition: "slide"} );
+				//$.mobile.pageContainer.pagecontainer("change", "#infos", { transition: "slide"} );
+				document.location.href='index.html';
 			}
 			else {
 				$('#dblinks').append($('<input id="stop" type="hidden" value="0" />'));
